@@ -1,0 +1,18 @@
+#history{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; height: var(--history-height);
+    /* background-color: blue; */
+    overflow: scroll;
+
+    display: flex;
+    align-items: center;
+    padding-inline: 25px;
+    color: white;
+    gap: 5px;
+
+}
+#history p{
+    font-size: 2em;
+}
