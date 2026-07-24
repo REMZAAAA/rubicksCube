@@ -1,0 +1,22 @@
+#menu{
+    position: absolute;
+    top: var(--history-height); left: 0;
+    padding: 25px;
+    /* background-color: red; */
+    display: flex;
+    width: min(500px, 100vw);
+    height: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px 5px;
+}
+
+#menu button{
+    all: unset;
+    width: var(--menu-button-size); height: var(--menu-button-size);
+    color: white;
+    background-color: black;
+    display: grid;
+    place-items: center;
+    user-select: none;
+}
