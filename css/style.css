@@ -1,0 +1,176 @@
+:root{
+    --c: 100px;
+    --animation-duration: .2;
+    --history-height: 50px;
+    --menu-button-size: 50px;
+}
+
+@media screen and (max-width: 500px) {
+    :root{
+        --c: 50px;
+        --menu-button-size: 40px;
+    }
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    height: 100dvh;
+    max-height: 100dvh;
+    width: 100vw;
+    max-width: 100vw;
+
+    background-color: rgb(34, 34, 34);
+    display: grid;
+    place-items: center;
+
+    perspective: 800px;
+    overflow: hidden;
+    font-family: monospace;
+}
+
+main{
+    width: calc(var(--c) * 3);
+    height: calc(var(--c) * 3);
+    transform-style: preserve-3d;
+
+    transform: rotateX(-30deg) rotateY(-45deg);
+    cursor: grab;
+}
+
+main .cube{
+    position: absolute;
+    min-width: var(--c); min-height: var(--c);
+    transform-style: preserve-3d;
+}
+
+.cube .face{
+    --transform-factor: 1;
+    --translate-calc: calc((var(--transform-factor) * var(--c)) / 2);
+
+    width: 100%; height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+
+    border: 1px solid black;
+}
+
+.cube .face:nth-child(odd){--transform-factor: -1;}
+.cube .face:nth-of-type(1){transform: translateZ(var(--translate-calc));}
+.cube .face:nth-of-type(2){transform: translateZ(var(--translate-calc)) rotateY(180deg);}
+.cube .face:nth-of-type(3){transform: translateY(var(--translate-calc)) rotateX(90deg) rotateY(180deg) rotateZ(180deg);}
+.cube .face:nth-of-type(4){transform: translateY(var(--translate-calc)) rotateX(90deg);}
+.cube .face:nth-of-type(5){transform: translateX(var(--translate-calc)) rotateY(90deg);}
+.cube .face:nth-of-type(6){transform: translateX(var(--translate-calc)) rotateY(-90deg);}
+
+/*  */
+
+main .face{
+    background-color: black;
+    user-select: none;
+}
+
+/*  */
+
+main #c1{
+    transform: translateZ(var(--c));
+}
+
+main #c2{
+    transform: translateZ(var(--c)) translateX(var(--c));
+}
+
+main #c3{
+    transform: translateZ(var(--c)) translateX(calc(2 * var(--c)));
+}
+
+main #c4{
+    transform: translateZ(var(--c)) translateY(var(--c));
+}
+main #c5{
+    transform: translateZ(var(--c)) translateX(var(--c)) translateY(var(--c));
+}
+main #c6{
+    transform: translateZ(var(--c)) translateX(calc(2 * var(--c))) translateY(var(--c));
+}
+
+main #c7{
+    transform: translateZ(var(--c)) translateY(calc(2 * var(--c)));
+}
+main #c8{
+    transform: translateZ(var(--c)) translateX(var(--c)) translateY(calc(2 * var(--c)));
+}
+main #c9{
+    transform: translateZ(var(--c)) translateX(calc(2 * var(--c))) translateY(calc(2 * var(--c)));
+}
+
+/*  */
+
+main #c10{
+    transform: none;
+}
+main #c11{
+    transform: translateX(var(--c));
+}
+main #c12{
+    transform: translateX(calc(2 * var(--c)));
+}
+
+main #c13{
+    transform: translateY(var(--c));
+}
+main #c14{
+    transform: translateX(var(--c)) translateY(var(--c));
+}
+main #c15{
+    transform: translateX(calc(2 * var(--c))) translateY(var(--c));
+}
+
+main #c16{
+    transform: translateY(calc(2 * var(--c)));
+}
+main #c17{
+    transform: translateX(var(--c)) translateY(calc(2 * var(--c)));
+}
+main #c18{
+    transform: translateX(calc(2 * var(--c))) translateY(calc(2 * var(--c)));
+}
+
+/*  */
+
+main #c19{
+    transform: translateZ(calc(-1 * var(--c)));
+}
+main #c20{
+    transform: translateZ(calc(-1 * var(--c))) translateX(var(--c));
+}
+main #c21{
+    transform: translateZ(calc(-1 * var(--c))) translateX(calc(2 * var(--c)));
+}
+
+main #c22{
+    transform: translateZ(calc(-1 * var(--c))) translateY(var(--c));
+}
+main #c23{
+    transform: translateZ(calc(-1 * var(--c))) translateX(var(--c)) translateY(var(--c));
+}
+main #c24{
+    transform: translateZ(calc(-1 * var(--c))) translateX(calc(2 * var(--c))) translateY(var(--c));
+}
+
+main #c25{
+    transform: translateZ(calc(-1 * var(--c))) translateY(calc(2 * var(--c)));
+}
+main #c26{
+    transform: translateZ(calc(-1 * var(--c))) translateX(var(--c)) translateY(calc(2 * var(--c)));
+}
+main #c27{
+    transform: translateZ(calc(-1 * var(--c))) translateX(calc(2 * var(--c))) translateY(calc(2 * var(--c)));
+}
+
+
+
