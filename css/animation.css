@@ -1,0 +1,43 @@
+.layer{
+    --rotate-value: 90deg;
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    animation-duration: calc(var(--animation-duration) * 1s);
+    /* animation-fill-mode: forwards; */
+    animation-timing-function: linear;
+    /* animation-delay: .5s; */
+}
+
+.reverse{
+    --direction: -1;
+}
+.normal{
+    --direction: 1;
+}
+
+.rotateX{
+    animation-name: rotateX;
+}
+.rotateY{
+    animation-name: rotateY;
+}
+.rotateZ{
+    animation-name: rotateZ;
+}
+
+@keyframes rotateX{
+    to{
+        transform: rotateX(calc(var(--rotate-value) * var(--direction)));
+    }
+}
+@keyframes rotateY{
+    to{
+        transform: rotateY(calc(var(--rotate-value) * var(--direction)));
+    }
+}
+@keyframes rotateZ{
+    to{
+        transform: rotateZ(calc(var(--rotate-value) * var(--direction)));
+    }
+}
