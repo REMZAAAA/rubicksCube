@@ -1,0 +1,302 @@
+import { cubeMap, matchBackground } from "./cubeMap.js"
+import { renderMap } from "./cubeRenderer.js"
+import { layers, layer, clearLayer } from "./layerHandler.js"
+
+export const animationDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
+
+export function layerMove(name, direction, nbRotation=1){
+    if (layer.childElementCount !== 0) {
+        clearLayer();
+    }
+
+    for (let i = 0; i < name.length; i++) {
+        executeLayerMove(name[i], parseInt(direction[i]), nbRotation);
+    }
+}
+
+function executeLayerMove(name, direction, nbRotation){
+    const layerName = getLayerByName(name);
+    const layerGrid = layerName.grid;
+    const layerRotateAxis = layerName.rotateAxis.toUpperCase();
+
+    layer.style.setProperty("--rotate-value", `calc(90deg * ${nbRotation})`)
+
+    layer.className = `layer rotate${layerRotateAxis} ${direction > 0 ? "normal" : "reverse"}`;
+    layerGrid.forEach(id => { 
+        layer.appendChild(document.querySelectorAll(`.cube#${id}`)[0]);
+    })
+
+    console.log("############## start ##############\n",);
+    renderMap(cubeMap);
+
+    const move = getMoveData(name, direction);
+
+    for (let i = 0; i < nbRotation; i++) {
+        if (!move.oneLayer){
+            rotateFace(move.face, move.direct);
+        }
+
+        rotateSides(
+            ...move.sides,
+            move.sideIndex,
+            move.direct
+        );
+    }
+
+    setTimeout(() => {
+        console.log("############## end ##############\n");
+        layer.className = "layer";
+        renderMap(cubeMap);
+        matchBackground();
+    }, animationDuration)
+}
+
+function getLayerByName(name){
+    for (let i = 0; i < layers.length; i++) {
+        if(layers[i].name == name){
+            return layers[i]
+        };
+    }
+}
+
+function getMoveData(name, direction){
+    switch(name){
+        case "frontLayer":
+            return{
+                face: cubeMap[0],
+                sides: [
+                    cubeMap[1],
+                    cubeMap[2],
+                    cubeMap[5],
+                    cubeMap[3]
+                ],
+                sideIndex: [
+                    [7, 8, 9],
+                    [1, 4, 7],
+                    [1, 2, 3],
+                    [3, 6, 9]
+                ],
+                direct: direction,
+                oneLayer: false
+            };
+        case "backLayer":
+            return{
+                face: cubeMap[4],
+                sides: [
+                    cubeMap[5],
+                    cubeMap[2],
+                    cubeMap[1],
+                    cubeMap[3]
+                ],
+                sideIndex: [
+                    [7, 8, 9],
+                    [9, 6, 3],
+                    [1, 2, 3],
+                    [7, 4, 1]
+                ],
+                direct: direction * -1,
+                oneLayer: false
+            };
+        case "leftLayer":
+            return{
+                face: cubeMap[3],
+                sides: [
+                    cubeMap[0],
+                    cubeMap[5],
+                    cubeMap[4],
+                    cubeMap[1]
+                ],
+                sideIndex: [
+                    [1, 4, 7],
+                    [1, 4, 7],
+                    [7, 4, 1],
+                    [7, 4, 1]
+                ],
+                direct: direction * -1,
+                oneLayer: false
+            };
+        case "rightLayer":
+            return{
+                face: cubeMap[2],
+                sides: [
+                    cubeMap[1],
+                    cubeMap[4],
+                    cubeMap[5],
+                    cubeMap[0]
+                ],
+                sideIndex: [
+                    [9, 6, 3],
+                    [9, 6, 3],
+                    [3, 6, 9],
+                    [3, 6, 9]
+                ],
+                direct: direction,
+                oneLayer: false
+            };
+        case "topLayer":
+            return{
+                face: cubeMap[1],
+                sides: [
+                    cubeMap[4],
+                    cubeMap[2],
+                    cubeMap[0],
+                    cubeMap[3]
+                ],
+                sideIndex: [
+                    [7, 8, 9],
+                    [3, 2, 1],
+                    [1, 2, 3],
+                    [1, 2, 3]
+                ],
+                direct: direction * -1,
+                oneLayer: false
+            };
+        case "bottomLayer":
+            return{
+                face: cubeMap[5],
+                sides: [
+                    cubeMap[0],
+                    cubeMap[2],
+                    cubeMap[4],
+                    cubeMap[3]
+                ],
+                sideIndex: [
+                    [7, 8, 9],
+                    [7, 8, 9],
+                    [1, 2, 3],
+                    [9, 8, 7]
+                ],
+                direct: direction,
+                oneLayer: false
+            }
+
+        case "midXLayer":
+            return{
+                sides: [
+                    cubeMap[1],
+                    cubeMap[4],
+                    cubeMap[5],
+                    cubeMap[0]
+                ],
+                sideIndex: [
+                    [8, 5, 2],
+                    [8, 5, 2],
+                    [2, 5, 8],
+                    [2, 5, 8]
+                ],
+                direct: direction,
+                oneLayer: true
+            };
+        case "midYLayer":
+            return{
+                sides: [
+                    cubeMap[4],
+                    cubeMap[2],
+                    cubeMap[0],
+                    cubeMap[3]
+                ],
+                sideIndex: [
+                    [4, 5, 6],
+                    [6, 5, 4],
+                    [4, 5, 6],
+                    [4, 5, 6]
+                ],
+                direct: direction * -1,
+                oneLayer: true
+            };
+        case "midZLayer":
+            return{
+                sides: [
+                    cubeMap[1],
+                    cubeMap[2],
+                    cubeMap[5],
+                    cubeMap[3]
+                ],
+                sideIndex: [
+                    [4, 5, 6],
+                    [2, 5, 8],
+                    [4, 5, 6],
+                    [2, 5, 8]
+                ],
+                direct: direction,
+                oneLayer: true
+            };
+    }
+}
+
+function rotateFace(face, direction){
+    const faceTemp = Array();
+    for (let i = 0; i < face.length; i++) {
+        faceTemp.push({
+            "color": face[i].color,
+        })        
+    }
+
+    if(direction > 0){
+        face[0].color = faceTemp[6].color
+        face[1].color = faceTemp[3].color
+        face[2].color = faceTemp[0].color
+
+        face[3].color = faceTemp[7].color
+        face[4].color = faceTemp[4].color
+        face[5].color = faceTemp[1].color
+
+        face[6].color = faceTemp[8].color
+        face[7].color = faceTemp[5].color
+        face[8].color = faceTemp[2].color
+    }else{
+        face[0].color = faceTemp[2].color
+        face[1].color = faceTemp[5].color
+        face[2].color = faceTemp[8].color
+
+        face[3].color = faceTemp[1].color
+        face[4].color = faceTemp[4].color
+        face[5].color = faceTemp[7].color
+
+        face[6].color = faceTemp[0].color
+        face[7].color = faceTemp[3].color
+        face[8].color = faceTemp[6].color
+    }
+}
+
+function rotateSides(side1, side2, side3, side4, sideIndex, direction){
+    const faceTemp1 = Array();
+    const faceTemp2 = Array();
+    const faceTemp3 = Array();
+    const faceTemp4 = Array();
+    const sideIndex1 = sideIndex[0];
+    const sideIndex2 = sideIndex[1];
+    const sideIndex3 = sideIndex[2];
+    const sideIndex4 = sideIndex[3];
+
+    for (let i = 0; i < 3; i++) {
+        let antiClockwiseIndex;
+        let clockwiseIndex;
+
+        antiClockwiseIndex = (2 * (direction > 0))-i;
+        clockwiseIndex = (2 * (direction < 0))-i;
+        antiClockwiseIndex = antiClockwiseIndex < 0 ? antiClockwiseIndex * -1 : antiClockwiseIndex;
+        clockwiseIndex = clockwiseIndex < 0 ? clockwiseIndex * -1 : clockwiseIndex;
+
+        faceTemp1.push({"color": side1[sideIndex1[clockwiseIndex] - 1].color});
+        faceTemp2.push({"color": side2[sideIndex2[antiClockwiseIndex] - 1].color});
+        faceTemp3.push({"color": side3[sideIndex3[clockwiseIndex] - 1].color});
+        faceTemp4.push({"color": side4[sideIndex4[antiClockwiseIndex] - 1].color});
+    }
+
+    if (direction > 0){
+        for (let i = 0; i < 3; i++) {
+            side1[sideIndex1[i] - 1].color = faceTemp4[i].color
+            side2[sideIndex2[i] - 1].color = faceTemp1[i].color
+            side3[sideIndex3[i] - 1].color = faceTemp2[i].color
+            side4[sideIndex4[i] - 1].color = faceTemp3[i].color
+        }
+    }else{
+        for (let i = 0; i < 3; i++) {
+            side1[sideIndex1[i] - 1].color = faceTemp2[i].color
+            side2[sideIndex2[i] - 1].color = faceTemp3[i].color
+            side3[sideIndex3[i] - 1].color = faceTemp4[i].color
+            side4[sideIndex4[i] - 1].color = faceTemp1[i].color
+        }
+    }
+}
