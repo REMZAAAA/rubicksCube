@@ -1,5 +1,4 @@
 import { cubeMap, matchBackground } from "./cubeMap.js"
-import { renderMap } from "./cubeRenderer.js"
 import { layers, layer, clearLayer } from "./layerHandler.js"
 
 const defaultDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
@@ -33,9 +32,6 @@ function executeLayerMove(name, direction, nbRotation){
     })
     // start the css animation here
 
-    console.log("before\n",);
-    renderMap(cubeMap);
-
     const move = getMoveData(name, direction);
 
     for (let i = 0; i < nbRotation; i++) {
@@ -51,9 +47,7 @@ function executeLayerMove(name, direction, nbRotation){
     }
 
     setTimeout(() => {
-        console.log("after\n");
         layer.className = "layer";
-        renderMap(cubeMap);
         matchBackground(cubeMap);
     }, animationDuration)
 }
@@ -278,18 +272,18 @@ function rotateSides(side1, side2, side3, side4, sideIndex, direction){
     const sideIndex4 = sideIndex[3];
 
     for (let i = 0; i < 3; i++) {
-        let antiClockwiseIndex;
+        let counterClockwiseIndex;
         let clockwiseIndex;
 
-        antiClockwiseIndex = (2 * (direction > 0))-i;
+        counterClockwiseIndex = (2 * (direction > 0))-i;
         clockwiseIndex = (2 * (direction < 0))-i;
-        antiClockwiseIndex = antiClockwiseIndex < 0 ? antiClockwiseIndex * -1 : antiClockwiseIndex;
+        counterClockwiseIndex = counterClockwiseIndex < 0 ? counterClockwiseIndex * -1 : counterClockwiseIndex;
         clockwiseIndex = clockwiseIndex < 0 ? clockwiseIndex * -1 : clockwiseIndex;
 
         faceTemp1.push({"color": side1[sideIndex1[clockwiseIndex] - 1].color});
-        faceTemp2.push({"color": side2[sideIndex2[antiClockwiseIndex] - 1].color});
+        faceTemp2.push({"color": side2[sideIndex2[counterClockwiseIndex] - 1].color});
         faceTemp3.push({"color": side3[sideIndex3[clockwiseIndex] - 1].color});
-        faceTemp4.push({"color": side4[sideIndex4[antiClockwiseIndex] - 1].color});
+        faceTemp4.push({"color": side4[sideIndex4[counterClockwiseIndex] - 1].color});
     }
 
     if (direction > 0){
