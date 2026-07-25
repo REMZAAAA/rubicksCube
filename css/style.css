@@ -41,6 +41,7 @@ body{
 button{
     all: unset;
     user-select: none;
+    cursor: pointer;
 }
 
 aside{
