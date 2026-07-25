@@ -1,4 +1,4 @@
-const cube = document.querySelector("main");
+const mainCube = document.querySelector("#mainCube");
 
 let drag = false;
 
@@ -8,15 +8,15 @@ let y = 0;
 let rx = -30;
 let ry = -45;
 
-cube.addEventListener("pointerdown", e => {
+mainCube.addEventListener("pointerdown", e => {
     drag = true;
     x = e.clientX;
     y = e.clientY;
 
-    cube.setPointerCapture(e.pointerId);
+    mainCube.setPointerCapture(e.pointerId);
 });
 
-cube.addEventListener("pointermove", e => {
+mainCube.addEventListener("pointermove", e => {
     if (!drag) return;
 
     ry += (e.clientX - x) * 0.4;
@@ -25,7 +25,7 @@ cube.addEventListener("pointermove", e => {
     x = e.clientX;
     y = e.clientY;
 
-    cube.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    mainCube.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
 });
 
-cube.addEventListener("pointerup", () => drag = false);
+mainCube.addEventListener("pointerup", () => drag = false);
