@@ -1,3 +1,4 @@
+const canvas = document.querySelector("#canvas");
 const mainCube = document.querySelector("#mainCube");
 const cellId = document.querySelectorAll(".cube p")
 
@@ -9,7 +10,7 @@ let y = 0;
 let rx = -30;
 let ry = -45;
 
-mainCube.addEventListener("pointerdown", e => {
+canvas.addEventListener("pointerdown", e => {
     drag = true;
     x = e.clientX;
     y = e.clientY;
@@ -17,7 +18,7 @@ mainCube.addEventListener("pointerdown", e => {
     mainCube.setPointerCapture(e.pointerId);
 });
 
-mainCube.addEventListener("pointermove", e => {
+canvas.addEventListener("pointermove", e => {
     if (!drag) return;
 
     ry += (e.clientX - x) * 0.4;
@@ -34,4 +35,4 @@ mainCube.addEventListener("pointermove", e => {
     }
 });
 
-mainCube.addEventListener("pointerup", () => drag = false);
+canvas.addEventListener("pointerup", () => drag = false);

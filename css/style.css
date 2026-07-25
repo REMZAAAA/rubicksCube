@@ -18,7 +18,6 @@ body{
     background-color: rgb(34, 34, 34);
     
     font-family: monospace;
-    overflow: hidden;
 
     display: flex; flex-direction: row-reverse;
     padding: 10px;
@@ -66,18 +65,21 @@ aside:nth-of-type(2){
 
 #canvas{
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     width: 100%; height: auto;
     min-height: calc(var(--c) * 3);
 
     padding-block: 40px;
     perspective: 800px;
-    background-color: black;
 
     overflow: hidden;
     user-select: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    touch-action: none;
+
+    background-color: black;
 }
 
 #mainCube{
