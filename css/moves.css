@@ -1,0 +1,33 @@
+#moves{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    flex-wrap: wrap;
+    gap: 5px 5px;
+
+    width: 100%;
+    height: auto;
+    min-width: 200px;
+
+    margin-inline: auto;
+}
+
+#moves button{
+    width: var(--moves-button-size); height: var(--moves-button-size);
+    color: white;
+    background-color: black;
+    display: grid;
+    place-items: center;
+    opacity: 1;
+}
+
+#moves button:active{
+    opacity: .2;
+    background-color: white;
+    color: black;
+}
+
+#moves button:disabled{
+    opacity: .2;
+}
