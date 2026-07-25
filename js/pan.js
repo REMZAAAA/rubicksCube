@@ -1,4 +1,5 @@
 const mainCube = document.querySelector("#mainCube");
+const cellId = document.querySelectorAll(".cube p")
 
 let drag = false;
 
@@ -26,6 +27,11 @@ mainCube.addEventListener("pointermove", e => {
     y = e.clientY;
 
     mainCube.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    if (mainCube.classList.contains("showCell")){
+        cellId.forEach(element => {
+            element.style.transform = `rotateX(${-rx}deg) rotateY(${-ry}deg)`;
+        });
+    }
 });
 
 mainCube.addEventListener("pointerup", () => drag = false);

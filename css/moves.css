@@ -1,14 +1,15 @@
 #moves{
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     
     flex-wrap: wrap;
     gap: 5px 5px;
 
     width: 100%;
-    height: auto;
     min-width: 200px;
+    max-height: 100%;
+    overflow: scroll;
 
     margin-inline: auto;
 }

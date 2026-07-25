@@ -1,19 +1,15 @@
-// import { cubeMap } from "./cubeMap"
-
 function printLineList(list=null, y=0){
     let m = "";
 
     if (!list) {
         for (let i = 0; i < 3; i++) {
-            m += "    "
+            m += "  "
         } return m
     }
 
     for (let i = 0; i < 3; i++) {
         let color = list[i+(3 * y)].color.charAt(0);
-        let cube = parseInt(list[i+(3*y)].cube);
-        m += `${color}${cube}${(cube / 10) >= 1 ? "": " "} `;
-        
+        m += `${color} `;
     } return m
 }
 

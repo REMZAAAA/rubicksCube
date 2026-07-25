@@ -2,15 +2,19 @@ import { cubeMap, matchBackground } from "./cubeMap.js"
 import { renderMap } from "./cubeRenderer.js"
 import { layers, layer, clearLayer } from "./layerHandler.js"
 
-export const animationDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
+const defaultDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
+export let animationDuration = defaultDuration;
 
+// exemple of input in script.js
 export function layerMove(name, direction, nbRotation=1){
+    animationDuration = defaultDuration * parseInt(nbRotation);
+    
     if (layer.childElementCount !== 0) {
         clearLayer();
     }
 
     for (let i = 0; i < name.length; i++) {
-        executeLayerMove(name[i], parseInt(direction[i]), nbRotation);
+        executeLayerMove(name[i], parseInt(direction[i]),  parseInt(nbRotation));
     }
 }
 
@@ -20,19 +24,22 @@ function executeLayerMove(name, direction, nbRotation){
     const layerRotateAxis = layerName.rotateAxis.toUpperCase();
 
     layer.style.setProperty("--rotate-value", `calc(90deg * ${nbRotation})`)
+    document.documentElement.style.setProperty("--animation-duration", animationDuration / 1000)
+    // Because I manage the animation with css, I can just edit the css variables.
 
     layer.className = `layer rotate${layerRotateAxis} ${direction > 0 ? "normal" : "reverse"}`;
     layerGrid.forEach(id => { 
         layer.appendChild(document.querySelectorAll(`.cube#${id}`)[0]);
     })
+    // start the css animation here
 
-    console.log("############## start ##############\n",);
+    console.log("before\n",);
     renderMap(cubeMap);
 
     const move = getMoveData(name, direction);
 
     for (let i = 0; i < nbRotation; i++) {
-        if (!move.oneLayer){
+        if (!move.oneLayer){ // for the moves : M, E, S, we don't need to rotate a face.
             rotateFace(move.face, move.direct);
         }
 
@@ -44,7 +51,7 @@ function executeLayerMove(name, direction, nbRotation){
     }
 
     setTimeout(() => {
-        console.log("############## end ##############\n");
+        console.log("after\n");
         layer.className = "layer";
         renderMap(cubeMap);
         matchBackground(cubeMap);
@@ -64,17 +71,18 @@ function getMoveData(name, direction){
         case "frontLayer":
             return{
                 face: cubeMap[0],
-                sides: [
-                    cubeMap[1],
-                    cubeMap[2],
-                    cubeMap[5],
-                    cubeMap[3]
+                sides: [        // staring at the face :
+                    cubeMap[1], // top face,
+                    cubeMap[2], // right face,
+                    cubeMap[5], // bottom face,
+                    cubeMap[3]  // left face.
                 ],
-                sideIndex: [
-                    [7, 8, 9],
-                    [1, 4, 7],
-                    [1, 2, 3],
-                    [3, 6, 9]
+                sideIndex: [    // adding the class "showCell" helps a lot.
+                                // it is read as:
+                    [7, 8, 9],  // from the left to the right,
+                    [1, 4, 7],  // from the top to the bottom,
+                    [1, 2, 3],  // from the left to the right,
+                    [3, 6, 9]   // from the top to the bottom.
                 ],
                 direct: direction,
                 oneLayer: false

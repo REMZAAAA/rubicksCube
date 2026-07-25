@@ -3,6 +3,15 @@ const tempLayer = document.createElement("div");
 tempLayer.className = "layer";
 export const layer = tempLayer;
 
+// Here's how I see it:
+// Instead of seeing it directly in 3D,
+// I imagine it in 2D first, we got 3 set of 9 cubes distributed like so:
+// [] [] []
+// [] [] []
+// [] [] []
+// To be able to move a face I create an element called "layer",
+// I simply add the 9 faces i need for the movement.
+
 export function clearLayer(){
     let temp = layer.firstChild;
     
@@ -12,6 +21,8 @@ export function clearLayer(){
     }
 }
 
+// If you try to understand why the grid are like that,
+// I suggest you to add the class "showCell" on the div#mainCube.
 export const layers = [
     {
         "name": "frontLayer",
@@ -25,9 +36,6 @@ export const layers = [
     {
         "name": "backLayer",
         "grid": [
-                // "c19","c20","c21",
-                // "c22","c23","c24",
-                // "c25","c26","c27",
                 "c25","c26","c27",
                 "c22","c23","c24",
                 "c19","c20","c21",
@@ -38,9 +46,6 @@ export const layers = [
     {
         "name": "leftLayer",
         "grid": [
-                // "c1","c4","c7",
-                // "c10","c13","c16",
-                // "c19","c22","c25",
                 "c19","c10","c1",
                 "c22","c13","c4",
                 "c25","c16","c7",
@@ -50,9 +55,6 @@ export const layers = [
     {
         "name": "rightLayer",
         "grid": [
-                // "c3","c6","c9",
-                // "c12","c15","c18",
-                // "c21","c24","c27",
                 "c3","c12","c21",
                 "c6","c15","c24",
                 "c9","c18","c27",
@@ -63,9 +65,6 @@ export const layers = [
     {
         "name": "topLayer",
         "grid": [
-                // "c1","c2","c3",
-                // "c10","c11","c12",
-                // "c19","c20","c21",
                 "c19","c20","c21",
                 "c10","c11","c12",
                 "c1","c2","c3",

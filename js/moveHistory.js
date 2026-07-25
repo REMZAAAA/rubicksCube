@@ -53,30 +53,20 @@ export function resetHistory(){
 }
 
 export function addMove(move){
-    console.log("before add", history)
-
     const moveElement = document.createElement("p");
     moveElement.innerText = move;
     history.push(move);
     historyBar.appendChild(moveElement);
-
-    console.log("after add", history)
 }
 
 export function removeMove(nb){
-    console.log("before remove", history)
-
     for (let i = 0; i < nb; i++) {
         historyBar.removeChild(historyBar.lastChild)
         history.pop();
     }
-
-    console.log("after remove", history)
 }
 
 export function checkForDouble(){
-    console.log("before double", history)
-
     if (history.length > 1){
         const move = history[history.length - 1];
         const lastMove = history[history.length - 2];
@@ -88,13 +78,9 @@ export function checkForDouble(){
             addMove(newMove);       // e.g. F F -> F2
         }
     }
-
-    console.log("after double", history)
 }
 
 export function checkForTriple(){
-    console.log("before triple", history)
-
     if (history.length > 1){
         const move = history[history.length - 1];
         const lastMove = history[history.length - 2];
@@ -104,13 +90,9 @@ export function checkForTriple(){
             addMove(opposite[move]);   // F2 F -> F'
         }
     }
-
-    console.log("after triple", history)
 }
 
 export function checkForOpposite(){
-    console.log("before opposite", history)
-
     if (history.length > 1){
         const move = history[history.length - 1];
         const lastMove = history[history.length - 2];
@@ -118,6 +100,4 @@ export function checkForOpposite(){
             removeMove(2)
         }
     }
-
-    console.log("after opposite", history)
 }

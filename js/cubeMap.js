@@ -1,10 +1,14 @@
 import { layers } from "./layerHandler.js"
 
 const faceAxis = {
+    // Each cube in the rubick's cube (27) have 6 faces and face the same direction.
+    // We want to be able to color face individually,
+    // for each axis you have the "front" and "back".
     "x": [5, 6],
     "y": [3, 4],
     "z": [1, 2]
 }
+
 
 const faceData = [
     {
@@ -47,9 +51,9 @@ export function resetMap(){
 
 function initMap(){
     const tempMap = Array();
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i++) {   // Create the 6 faces.
         tempMap.push(Array.from({ length: 9 }, () => ({"cube": null, "pos": null, "index": null})));      
-    }for (let i = 0; i < 9; i++) {
+    }for (let i = 0; i < 9; i++) {  // For each faces we have 9 squares.
         tempMap[0][i]["color"] = "White";
         tempMap[1][i]["color"] = "Orange";
         tempMap[2][i]["color"] = "Blue";
@@ -63,6 +67,12 @@ function initMap(){
 }
 
 function fillData(map){
+    // After the map is created, we still need to add some
+    // data to each square:
+    // - wich cube he is in
+    // - wich axis he face
+    // - is it the front or the back one ?
+    // - and finally the object.
     for (let i = 0; i < 6; i++) {
         for (let y = 0; y < 9; y++) {
             map[i][y]["cube"]  = parseInt(faceData[i].cube[y].slice(1));
