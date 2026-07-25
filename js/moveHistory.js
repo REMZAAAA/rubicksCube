@@ -43,6 +43,36 @@ const opposite = {
     "S'": "S",
     "S2": "S'2",
     "S'2": "S2",
+
+    "u": "u'",
+    "u'": "u",
+    "u2": "u'2",
+    "u'2": "u2",
+    
+    "d": "d'",
+    "d'": "d",
+    "d2": "d'2",
+    "d'2": "d2",
+    
+    "r": "r'",
+    "r'": "r",
+    "r2": "r'2",
+    "r'2": "r2",
+    
+    "l": "l'",
+    "l'": "l",
+    "l2": "l'2",
+    "l'2": "l2",
+    
+    "f": "f'",
+    "f'": "f",
+    "f2": "f'2",
+    "f'2": "f2",
+    
+    "b": "b'",
+    "b'": "b",
+    "b2": "b'2",
+    "b'2": "b2",
 };
 
 const historyBar = document.getElementById("history");
@@ -71,11 +101,13 @@ export function checkForDouble(){
         const move = history[history.length - 1];
         const lastMove = history[history.length - 2];
         let newMove;
-        console.log(lastMove, move, move === lastMove)
         if (move === lastMove){
-            removeMove(2);          // remove duplicates
+            removeMove(2);          // remove duplicates,
             newMove = `${move}2`;   // replace it with [move]2.
             addMove(newMove);       // e.g. F F -> F2
+        }else if (lastMove == `${opposite[move]}2`){
+            removeMove(2);
+            addMove(opposite[move])
         }
     }
 }
