@@ -2,14 +2,7 @@
     --c: 100px;
     --animation-duration: .2;
     --history-height: 50px;
-    --menu-button-size: 50px;
-}
-
-@media screen and (max-width: 500px) {
-    :root{
-        --c: 50px;
-        --menu-button-size: 40px;
-    }
+    --moves-button-size: 50px;
 }
 
 *{
@@ -20,20 +13,64 @@
 
 body{
     height: 100dvh;
-    max-height: 100dvh;
     width: 100vw;
-    max-width: 100vw;
 
     background-color: rgb(34, 34, 34);
-    display: grid;
-    place-items: center;
-
-    perspective: 800px;
-    overflow: hidden;
+    
     font-family: monospace;
+    overflow: hidden;
+
+    display: flex; flex-direction: row-reverse;
+    padding: 10px;
+    gap: 10px;
 }
 
-main{
+@media screen and (max-width: 650px) {
+    :root{
+        --c: 75px;
+    }
+
+    body{
+        flex-direction: column;
+    }
+}
+
+button{
+    all: unset;
+    user-select: none;
+}
+
+aside{
+    flex: 1;
+    display: flex; flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+}
+
+aside:nth-of-type(1){
+    flex: 10;
+}
+
+/*  */
+
+#canvas{
+    flex: 1;
+    width: 100%; height: auto;
+    min-height: calc(var(--c) * 3);
+
+    padding-block: 40px;
+    perspective: 800px;
+    background-color: black;
+
+    overflow: hidden;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#mainCube{
     width: calc(var(--c) * 3);
     height: calc(var(--c) * 3);
     transform-style: preserve-3d;
@@ -42,7 +79,7 @@ main{
     cursor: grab;
 }
 
-main .cube{
+#mainCube .cube{
     position: absolute;
     min-width: var(--c); min-height: var(--c);
     transform-style: preserve-3d;
@@ -69,108 +106,106 @@ main .cube{
 
 /*  */
 
-main .face{
+#mainCube .face{
     background-color: black;
     user-select: none;
 }
 
 /*  */
 
-main #c1{
+#mainCube #c1{
     transform: translateZ(var(--c));
 }
 
-main #c2{
+#mainCube #c2{
     transform: translateZ(var(--c)) translateX(var(--c));
 }
 
-main #c3{
+#mainCube #c3{
     transform: translateZ(var(--c)) translateX(calc(2 * var(--c)));
 }
 
-main #c4{
+#mainCube #c4{
     transform: translateZ(var(--c)) translateY(var(--c));
 }
-main #c5{
+#mainCube #c5{
     transform: translateZ(var(--c)) translateX(var(--c)) translateY(var(--c));
 }
-main #c6{
+#mainCube #c6{
     transform: translateZ(var(--c)) translateX(calc(2 * var(--c))) translateY(var(--c));
 }
 
-main #c7{
+#mainCube #c7{
     transform: translateZ(var(--c)) translateY(calc(2 * var(--c)));
 }
-main #c8{
+#mainCube #c8{
     transform: translateZ(var(--c)) translateX(var(--c)) translateY(calc(2 * var(--c)));
 }
-main #c9{
+#mainCube #c9{
     transform: translateZ(var(--c)) translateX(calc(2 * var(--c))) translateY(calc(2 * var(--c)));
 }
 
 /*  */
 
-main #c10{
+#mainCube #c10{
     transform: none;
 }
-main #c11{
+#mainCube #c11{
     transform: translateX(var(--c));
 }
-main #c12{
+#mainCube #c12{
     transform: translateX(calc(2 * var(--c)));
 }
 
-main #c13{
+#mainCube #c13{
     transform: translateY(var(--c));
 }
-main #c14{
+#mainCube #c14{
     transform: translateX(var(--c)) translateY(var(--c));
 }
-main #c15{
+#mainCube #c15{
     transform: translateX(calc(2 * var(--c))) translateY(var(--c));
 }
 
-main #c16{
+#mainCube #c16{
     transform: translateY(calc(2 * var(--c)));
 }
-main #c17{
+#mainCube #c17{
     transform: translateX(var(--c)) translateY(calc(2 * var(--c)));
 }
-main #c18{
+#mainCube #c18{
     transform: translateX(calc(2 * var(--c))) translateY(calc(2 * var(--c)));
 }
 
 /*  */
 
-main #c19{
+#mainCube #c19{
     transform: translateZ(calc(-1 * var(--c)));
 }
-main #c20{
+#mainCube #c20{
     transform: translateZ(calc(-1 * var(--c))) translateX(var(--c));
 }
-main #c21{
+#mainCube #c21{
     transform: translateZ(calc(-1 * var(--c))) translateX(calc(2 * var(--c)));
 }
 
-main #c22{
+#mainCube #c22{
     transform: translateZ(calc(-1 * var(--c))) translateY(var(--c));
 }
-main #c23{
+#mainCube #c23{
     transform: translateZ(calc(-1 * var(--c))) translateX(var(--c)) translateY(var(--c));
 }
-main #c24{
+#mainCube #c24{
     transform: translateZ(calc(-1 * var(--c))) translateX(calc(2 * var(--c))) translateY(var(--c));
 }
 
-main #c25{
+#mainCube #c25{
     transform: translateZ(calc(-1 * var(--c))) translateY(calc(2 * var(--c)));
 }
-main #c26{
+#mainCube #c26{
     transform: translateZ(calc(-1 * var(--c))) translateX(var(--c)) translateY(calc(2 * var(--c)));
 }
-main #c27{
+#mainCube #c27{
     transform: translateZ(calc(-1 * var(--c))) translateX(calc(2 * var(--c))) translateY(calc(2 * var(--c)));
 }
-
-
 
