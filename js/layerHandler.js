@@ -1,4 +1,4 @@
-export const main = document.querySelector("main");
+export const mainCube = document.querySelector("#mainCube");
 const tempLayer = document.createElement("div");
 tempLayer.className = "layer";
 export const layer = tempLayer;
@@ -7,7 +7,7 @@ export function clearLayer(){
     let temp = layer.firstChild;
     
     while(layer.firstChild){
-        main.appendChild(temp);
+        mainCube.appendChild(temp);
         temp = layer.firstChild;
     }
 }

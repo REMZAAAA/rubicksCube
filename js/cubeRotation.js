@@ -47,7 +47,7 @@ function executeLayerMove(name, direction, nbRotation){
         console.log("############## end ##############\n");
         layer.className = "layer";
         renderMap(cubeMap);
-        matchBackground();
+        matchBackground(cubeMap);
     }, animationDuration)
 }
 

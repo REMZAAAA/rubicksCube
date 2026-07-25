@@ -39,14 +39,10 @@ const faceData = [
     },
 ]
 
-export const cubeMap = initMap();
-const defaultMap = initMap();
-matchBackground()
+export let cubeMap = initMap();
 
 export function resetMap(){
-    for (let i = 0; i < cubeMap.length; i++) {
-        cubeMap[i] = defaultMap[i];
-    }
+    cubeMap = initMap();
 }
 
 function initMap(){
@@ -62,6 +58,7 @@ function initMap(){
         tempMap[5][i]["color"] = "Red";
     }
     fillData(tempMap)
+    matchBackground(tempMap)
     return tempMap
 }
 
@@ -76,9 +73,9 @@ function fillData(map){
     }
 }
 
-export function matchBackground(){
-    for (let i = 0; i < cubeMap.length; i++) {
-        cubeMap[i].forEach(el => {
+export function matchBackground(map){
+    for (let i = 0; i < map.length; i++) {
+        map[i].forEach(el => {
             el.obj.style.backgroundColor = el.color;
         });
     }
