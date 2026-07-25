@@ -1,13 +1,12 @@
-import { main, layer } from "./layerHandler.js"
-import { cubeMap, resetMap, matchBackground } from "./cubeMap.js"
+import { mainCube, layer } from "./layerHandler.js"
+import { cubeMap, resetMap } from "./cubeMap.js"
 import { renderMap } from "./cubeRenderer.js"
 import { layerMove, animationDuration } from "./cubeRotation.js"
 import { resetHistory, addMove, removeMove, checkForDouble, checkForTriple, checkForOpposite } from "./moveHistory.js"
 
-main.appendChild(layer);
+mainCube.appendChild(layer);
 
-const btnList = document.querySelectorAll("#menu button");
-
+const btnList = document.querySelectorAll("#moves button");
 btnList.forEach(element => {
     element.addEventListener("click", () => {
         // separate the names from the directions.
@@ -41,7 +40,6 @@ btnList.forEach(element => {
 const reset = document.querySelector("#reset button")
 reset.addEventListener("click", () => {
     resetMap();
-    matchBackground();
     resetHistory();
 });
 
