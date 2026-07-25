@@ -17,8 +17,6 @@ btnList.forEach(element => {                    // Whenever you click on a butto
         const btnDirection = btnContent.slice(separator, separator * 2);
         const btnNbRotation = btnContent.slice(separator * 2, btnContent.length);
 
-        console.log(btnValue, btnDirection, btnNbRotation);
-
         // It add the move to the history.
         addMove(element.textContent);
         checkForDouble()    // It then checks if it's possible
@@ -28,7 +26,12 @@ btnList.forEach(element => {                    // Whenever you click on a butto
         // Exemple of input:
         // F: ["frontLayer"], ["1"], 1
         // u: ["topLayer", midYlayer], ["-1", "-1"], 1
+        console.log("\n#############################################\n\n")
+        console.log("before move")
+        renderMap(cubeMap)
         layerMove(btnValue, btnDirection, btnNbRotation);
+        console.log("after move")
+        renderMap(cubeMap)
 
         // disable every button when one is clicked.
         btnList.forEach(el => {
