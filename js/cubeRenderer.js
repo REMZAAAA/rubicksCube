@@ -1,3 +1,5 @@
+import { mapColors } from "./colors.js";
+
 function printLineList(list=null, y=0){
     let m = "";
 
@@ -8,7 +10,7 @@ function printLineList(list=null, y=0){
     }
 
     for (let i = 0; i < 3; i++) {
-        let color = list[i+(3 * y)].color.charAt(0);
+        let color = mapColors[list[i+(3 * y)].color];
         m += `${color} `;
     } return m
 }
