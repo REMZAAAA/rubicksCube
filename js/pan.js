@@ -11,6 +11,8 @@ let rx = -30;
 let ry = -45;
 
 canvas.addEventListener("pointerdown", e => {
+    if (e.target.closest("#menu")) return;
+    
     drag = true;
     x = e.clientX;
     y = e.clientY;
