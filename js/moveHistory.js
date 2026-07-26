@@ -73,6 +73,21 @@ const opposite = {
     "b'": "b",
     "b2": "b'2",
     "b'2": "b2",
+
+    "x": "x'",
+    "x'": "x",
+    "x2": "x'2",
+    "x'2": "x2",
+    
+    "y": "y'",
+    "y'": "y",
+    "y2": "y'2",
+    "y'2": "y2",
+    
+    "z": "z'",
+    "z'": "z",
+    "z2": "z'2",
+    "z'2": "z2",
 };
 
 const historyBar = document.getElementById("history");
