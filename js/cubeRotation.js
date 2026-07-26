@@ -71,7 +71,7 @@ function getMoveData(name, direction){
                     cubeMap[5], // bottom face,
                     cubeMap[3]  // left face.
                 ],
-                sideIndex: [    // adding the class "showCell" helps a lot.
+                sideIndex: [    // activating the debug mode helps a lot.
                                 // it is read as:
                     [7, 8, 9],  // from the left to the right,
                     [1, 4, 7],  // from the top to the bottom,

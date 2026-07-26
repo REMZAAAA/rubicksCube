@@ -1,6 +1,7 @@
-export const mainCube = document.querySelector("#mainCube");
 const tempLayer = document.createElement("div");
 tempLayer.className = "layer";
+
+export const mainCube = document.querySelector("#mainCube");
 export const layer = tempLayer;
 
 // Here's how I see it:
@@ -23,6 +24,7 @@ export function clearLayer(){
 
 // If you try to understand why the grid are like that,
 // I suggest you to add the class "showCell" on the div#mainCube.
+// or activate the debug mode in the menu (top right of the canvas).
 export const layers = [
     {
         "name": "frontLayer",
