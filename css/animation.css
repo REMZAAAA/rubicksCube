@@ -4,9 +4,7 @@
     inset: 0;
     transform-style: preserve-3d;
     animation-duration: calc(var(--animation-duration) * 1s);
-    /* animation-fill-mode: forwards; */
     animation-timing-function: linear;
-    /* animation-delay: .5s; */
 }
 
 .reverse{

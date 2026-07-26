@@ -1,6 +1,7 @@
 #history{
     width: 100%; height: var(--history-height);
     overflow-x: scroll;
+    max-width: 100%;
 
     display: flex;
     align-items: center;

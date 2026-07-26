@@ -3,6 +3,8 @@
     --animation-duration: .2;
     --history-height: 50px;
     --moves-button-size: 50px;
+    --moves-width: 250px;
+    --padding-size: 10px;
 }
 
 *{
@@ -20,8 +22,8 @@ body{
     font-family: monospace;
 
     display: flex; flex-direction: row-reverse;
-    padding: 10px;
-    gap: 10px;
+    padding: var(--padding-size);
+    gap: var(--padding-size);
 }
 
 @media screen and (max-width: 650px) {
@@ -48,17 +50,19 @@ aside{
     display: flex; flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    gap: 10px;
+    gap: var(--padding-size);
 }
 
 aside:nth-of-type(1){
     flex: 10;
+    max-width: calc(100vw - (var(--moves-width) + (var(--padding-size) * 3)));
 
 }
 aside:nth-of-type(2){
     height: calc(100dvh - 80px);
     margin-top: auto;
     justify-content: space-between;
+    min-width: var(--moves-width);
 }
 
 /*  */
@@ -72,7 +76,6 @@ aside:nth-of-type(2){
     width: 100%; height: auto;
     min-height: calc(var(--c) * 3);
 
-    padding-block: 40px;
     perspective: 800px;
 
     overflow: hidden;
