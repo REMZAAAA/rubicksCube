@@ -4,10 +4,10 @@ import { renderMap } from "./cubeRenderer.js"
 import { layerMove, animationDuration } from "./cubeRotation.js"
 import { resetHistory, addMove, checkForDouble, checkForTriple, checkForOpposite } from "./moveHistory.js"
 import { updateColor, resetColor } from "./colors.js"
+import { btnList, shuffleCube } from "./shuffle.js"
 
 mainCube.appendChild(layer);
 
-const btnList = document.querySelectorAll("#moves button");
 btnList.forEach(element => {                    // Whenever you click on a button (move).
     element.addEventListener("click", () => {   // It get the value of the button.
         // Then separate the names from the directions.
@@ -45,11 +45,15 @@ btnList.forEach(element => {                    // Whenever you click on a butto
     });
 });
 
-const reset = document.querySelector("#reset button")
-reset.addEventListener("click", () => {
+const resetEL = document.querySelector("#commands .reset")
+resetEL.addEventListener("click", () => {
     resetMap();
     resetHistory();
-    resetColor();
+});
+
+const shuffleEl = document.querySelector("#commands .shuffle")
+shuffleEl.addEventListener("click", async () => {
+    await shuffleCube();
 });
 
 const colorInputEl = document.querySelectorAll(".colors input");
@@ -67,5 +71,10 @@ debugInput.addEventListener("click", () => {
         mainCube.classList.remove("showCell");
     }
 })
+
+const resetColorEl = document.querySelector("#menu .resetColor button")
+resetColorEl.addEventListener("click", () => {
+    resetColor();
+});
 
 renderMap(cubeMap);
