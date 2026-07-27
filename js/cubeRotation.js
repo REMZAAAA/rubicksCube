@@ -38,14 +38,13 @@ function executeLayerMove(name, direction, nbRotation){
         if (!move.oneLayer){ // for the moves : M, E, S, we don't need to rotate a face.
             rotateFace(move.face, move.direct);
         }
-
         rotateSides(
             ...move.sides,
             move.sideIndex,
             move.direct
         );
     }
-
+    console.log(cubeMap)
     setTimeout(() => {
         layer.className = "layer";
         matchBackground(cubeMap);
@@ -231,33 +230,15 @@ function rotateFace(face, direction){
     for (let i = 0; i < face.length; i++) {
         faceTemp.push({
             "color": face[i].color,
+            "faceId": face[i].faceId,
         })        
     }
 
-    if(direction > 0){
-        face[0].color = faceTemp[6].color
-        face[1].color = faceTemp[3].color
-        face[2].color = faceTemp[0].color
+    let faceTempIndex = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+    if (direction < 0) faceTempIndex.reverse();
 
-        face[3].color = faceTemp[7].color
-        face[4].color = faceTemp[4].color
-        face[5].color = faceTemp[1].color
-
-        face[6].color = faceTemp[8].color
-        face[7].color = faceTemp[5].color
-        face[8].color = faceTemp[2].color
-    }else{
-        face[0].color = faceTemp[2].color
-        face[1].color = faceTemp[5].color
-        face[2].color = faceTemp[8].color
-
-        face[3].color = faceTemp[1].color
-        face[4].color = faceTemp[4].color
-        face[5].color = faceTemp[7].color
-
-        face[6].color = faceTemp[0].color
-        face[7].color = faceTemp[3].color
-        face[8].color = faceTemp[6].color
+    for (let i = 0; i < face.length; i++) {
+        swapStickers(face[i], faceTemp[faceTempIndex[i]])
     }
 }
 
@@ -280,25 +261,49 @@ function rotateSides(side1, side2, side3, side4, sideIndex, direction){
         counterClockwiseIndex = counterClockwiseIndex < 0 ? counterClockwiseIndex * -1 : counterClockwiseIndex;
         clockwiseIndex = clockwiseIndex < 0 ? clockwiseIndex * -1 : clockwiseIndex;
 
-        faceTemp1.push({"color": side1[sideIndex1[clockwiseIndex] - 1].color});
-        faceTemp2.push({"color": side2[sideIndex2[counterClockwiseIndex] - 1].color});
-        faceTemp3.push({"color": side3[sideIndex3[clockwiseIndex] - 1].color});
-        faceTemp4.push({"color": side4[sideIndex4[counterClockwiseIndex] - 1].color});
+        faceTemp1.push({
+            "color": side1[sideIndex1[clockwiseIndex] - 1].color,
+            "faceId": side1[sideIndex1[clockwiseIndex] - 1].faceId
+        });
+        faceTemp2.push({
+            "color": side2[sideIndex2[counterClockwiseIndex] - 1].color,
+            "faceId": side2[sideIndex2[counterClockwiseIndex] - 1].faceId
+        });
+        faceTemp3.push({
+            "color": side3[sideIndex3[clockwiseIndex] - 1].color,
+            "faceId": side3[sideIndex3[clockwiseIndex] - 1].faceId
+        });
+        faceTemp4.push({
+            "color": side4[sideIndex4[counterClockwiseIndex] - 1].color,
+            "faceId": side4[sideIndex4[counterClockwiseIndex] - 1].faceId
+        });
     }
 
-    if (direction > 0){
-        for (let i = 0; i < 3; i++) {
-            side1[sideIndex1[i] - 1].color = faceTemp4[i].color
-            side2[sideIndex2[i] - 1].color = faceTemp1[i].color
-            side3[sideIndex3[i] - 1].color = faceTemp2[i].color
-            side4[sideIndex4[i] - 1].color = faceTemp3[i].color
-        }
-    }else{
-        for (let i = 0; i < 3; i++) {
-            side1[sideIndex1[i] - 1].color = faceTemp2[i].color
-            side2[sideIndex2[i] - 1].color = faceTemp3[i].color
-            side3[sideIndex3[i] - 1].color = faceTemp4[i].color
-            side4[sideIndex4[i] - 1].color = faceTemp1[i].color
+    let faceTempIndex = [faceTemp4, faceTemp1, faceTemp2, faceTemp3]
+    let sideList = [
+        [side1, sideIndex1],
+        [side2, sideIndex2],
+        [side3, sideIndex3],
+        [side4, sideIndex4],
+    ]
+    if (direction < 0) faceTempIndex = swapIndex(faceTempIndex, [2, 3, 0, 1]);
+
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 3; j++) {
+            swapStickers(sideList[i][0][sideList[i][1][j] - 1], faceTempIndex[i][j])
         }
     }
+}
+
+function swapIndex(list, newIndex){
+    let temp = Array()
+    for (let i = 0; i < list.length; i++) {
+        temp[i] = list[newIndex[i]];
+    }
+    return temp
+}
+
+function swapStickers(sticker, target){
+    sticker.faceId = target.faceId
+    sticker.color = target.color
 }
