@@ -1,5 +1,5 @@
 import { mainCube, layer } from "./layerHandler.js"
-import { cubeMap, resetMap, matchBackground } from "./cubeMap.js"
+import { cubeMap, resetMap } from "./cubeMap.js"
 import { renderMap } from "./cubeRenderer.js"
 import { layerMove, animationDuration } from "./cubeRotation.js"
 import { resetHistory, addMove, checkForDouble, checkForTriple, checkForOpposite } from "./moveHistory.js"
@@ -56,13 +56,11 @@ const colorInputEl = document.querySelectorAll(".colors input");
 colorInputEl.forEach(element => {
     element.addEventListener("change", () => {
         updateColor();
-        matchBackground(cubeMap)
     });
 });
 
 const debugInput = document.querySelector("#menu .debug input");
 debugInput.addEventListener("click", () => {
-    console.log("clicked", debugInput.checked)
     if (debugInput.checked){
         mainCube.classList.add("showCell");
     } else{
