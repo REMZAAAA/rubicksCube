@@ -1,4 +1,4 @@
-import { matchBackground, cubeMap } from "./cubeMap.js";
+import { updateBackground, cubeMap } from "./cubeMap.js";
 
 const baseColors = [
     {
@@ -45,12 +45,12 @@ export function updateColor(){
         let tempColor = colors[i].color;
         colors[i].color = colorsEl.querySelector(`input:nth-of-type(${i+1})`).value;
     }
-    matchBackground(cubeMap);
+    updateBackground(cubeMap);
 }
 
 export function resetColor(){
     colors = initColor();
-    matchBackground(cubeMap);
+    updateBackground(cubeMap);
 }
 
 export let colors = initColor();

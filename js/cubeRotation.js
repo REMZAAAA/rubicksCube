@@ -1,5 +1,5 @@
-import { cubeMap, matchBackground } from "./cubeMap.js"
-import { layers, layer, clearLayer } from "./layerHandler.js"
+import { cubeMap, updateBackground } from "./cubeMap.js"
+import { layers, layer, resetLayer } from "./layerHandler.js"
 
 const defaultDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
 export let animationDuration = defaultDuration;
@@ -9,7 +9,7 @@ export function layerMove(name, direction, nbRotation=1){
     animationDuration = defaultDuration * parseInt(nbRotation);
     
     if (layer.childElementCount !== 0) {
-        clearLayer();
+        resetLayer();
     }
 
     for (let i = 0; i < name.length; i++) {
@@ -47,7 +47,7 @@ function executeLayerMove(name, direction, nbRotation){
     console.log(cubeMap)
     setTimeout(() => {
         layer.className = "layer";
-        matchBackground(cubeMap);
+        updateBackground(cubeMap);
     }, animationDuration)
 }
 

@@ -58,12 +58,12 @@ function initMap(){
             "faceId": i
         })));      
     }
-    fillData(tempMap)
-    matchBackground(tempMap)
+    fillMap(tempMap)
+    updateBackground(tempMap)
     return tempMap
 }
 
-function fillData(map){
+function fillMap(map){
     // After the map is created, we still need to add some
     // data to each square:
     // - wich cube he is in
@@ -80,7 +80,7 @@ function fillData(map){
     }
 }
 
-export function matchBackground(map){
+export function updateBackground(map){
     for (let i = 0; i < 6; i++) {
         for (let y = 0; y < 9; y++) {
             map[i][y].color = colors[map[i][y].faceId].color

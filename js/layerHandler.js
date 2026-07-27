@@ -13,7 +13,7 @@ export const layer = tempLayer;
 // To be able to move a face I create an element called "layer",
 // I simply add the 9 faces i need for the movement.
 
-export function clearLayer(){
+export function resetLayer(){
     let temp = layer.firstChild;
     
     while(layer.firstChild){
