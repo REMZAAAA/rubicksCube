@@ -1,11 +1,12 @@
 import { cubeMap, updateBackground } from "./cubeMap.js"
 import { layers, layer, resetLayer } from "./layerHandler.js"
 
-const defaultDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
+let defaultDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
 export let animationDuration = defaultDuration;
 
 // exemple of input in script.js
 export function layerMove(name, direction, nbRotation=1){
+    defaultDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
     animationDuration = defaultDuration * parseInt(nbRotation);
     
     if (layer.childElementCount !== 0) {
