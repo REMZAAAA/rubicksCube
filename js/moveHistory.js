@@ -116,13 +116,19 @@ export function checkForDouble(){
         const move = history[history.length - 1];
         const lastMove = history[history.length - 2];
         let newMove;
-        if (move === lastMove){
+        console.log(lastMove, move)
+        if (move === lastMove && move[move.length - 1] !== '2'){
             removeMove(2);          // remove duplicates,
             newMove = `${move}2`;   // replace it with [move]2.
             addMove(newMove);       // e.g. F F -> F2
         }else if (lastMove == `${opposite[move]}2`){
             removeMove(2);
             addMove(opposite[move])
+        }else if (move === `${lastMove}2`){
+            removeMove(2);
+            addMove(opposite[lastMove])
+        }else if (move === lastMove && move[move.length - 1] === '2'){
+            removeMove(2);
         }
     }
 }
