@@ -1,5 +1,6 @@
 #history{
     width: 100%; height: var(--history-height);
+    min-height: var(--history-height);
     overflow-x: scroll;
     max-width: 100%;
 
