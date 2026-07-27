@@ -1,44 +1,56 @@
+import { matchBackground, cubeMap } from "./cubeMap.js";
+
 const baseColors = [
-    "#ffffff",
-    "#ffa500",
-    "#0000ff",
-    "#008000",
-    "#ff0000",
-    "#ffff00",
+    {
+        "color": "#ffffff",
+        "abbreviatedColor": "W"
+    },
+    {
+        "color": "#ffa500",
+        "abbreviatedColor": "O"
+    },
+    {
+        "color": "#0000ff",
+        "abbreviatedColor": "B"
+    },
+    {
+        "color": "#008000",
+        "abbreviatedColor": "G"
+    },
+    {
+        "color": "#ff0000",
+        "abbreviatedColor": "R"
+    },
+    {
+        "color": "#ffff00",
+        "abbreviatedColor": "Y"
+    }
 ]
 const colorsEl = document.querySelector(".colors");
 
-export const mapColors = {
-    "#ffffff": "W",
-    "#ffa500": "O",
-    "#0000ff": "B",
-    "#008000": "F",
-    "#ff0000": "R",
-    "#ffff00": "Y"
-}
-export let colors = initColor();
-export let oldColors;
-updateColor();
-
-export function initColor(){
+function initColor(){
+    let temp = Array();
     for (let i = 0; i < baseColors.length; i++) {
-        colorsEl.querySelector(`input:nth-of-type(${i+1})`).value = baseColors[i];
+        colorsEl.querySelector(`input:nth-of-type(${i+1})`).value = baseColors[i].color;
+        temp.push({
+            "color": baseColors[i].color,
+            "abbreviatedColor": baseColors[i].abbreviatedColor
+        });
     }
-    return baseColors;
+    return temp
 }
 
 export function updateColor(){
-    oldColors = Array();
     for (let i = 0; i < colors.length; i++) {
-        let tempColor = colors[i];  
-        colors[i] = colorsEl.querySelector(`input:nth-of-type(${i+1})`).value;
-        oldColors.push({[tempColor]: colors[i]})
-        mapColors[colors[i]] = mapColors[tempColor]
-
-        if (!(colors[i] === tempColor)) delete mapColors[tempColor];
+        let tempColor = colors[i].color;
+        colors[i].color = colorsEl.querySelector(`input:nth-of-type(${i+1})`).value;
     }
+    matchBackground(cubeMap);
 }
 
 export function resetColor(){
     colors = initColor();
+    matchBackground(cubeMap);
 }
+
+export let colors = initColor();
