@@ -1,4 +1,4 @@
-import { mapColors } from "./colors.js";
+import { colors } from "./colors.js";
 
 function printLineList(list=null, y=0){
     let m = "";
@@ -10,7 +10,7 @@ function printLineList(list=null, y=0){
     }
 
     for (let i = 0; i < 3; i++) {
-        let color = mapColors[list[i+(3 * y)].color];
+        let color = colors[list[i+(3 * y)].faceId].abbreviatedColor;
         m += `${color} `;
     } return m
 }
