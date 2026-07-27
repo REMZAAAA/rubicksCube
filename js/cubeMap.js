@@ -1,5 +1,5 @@
 import { layers } from "./layerHandler.js"
-import { initColor, updateColor, colors, oldColors } from "./colors.js";
+import { colors } from "./colors.js";
 
 const faceAxis = {
     // Each cube in the rubick's cube (27) have 6 faces and face the same direction.
@@ -53,7 +53,10 @@ export function resetMap(){
 function initMap(){
     const tempMap = Array();
     for (let i = 0; i < 6; i++) { // Create the 6 faces.
-        tempMap.push(Array.from({ length: 9 }, () => ({"color": colors[i]})));      
+        tempMap.push(Array.from({ length: 9 }, () => ({
+            "color": colors[i],
+            "faceId": i
+        })));      
     }
     fillData(tempMap)
     matchBackground(tempMap)
@@ -80,11 +83,7 @@ function fillData(map){
 export function matchBackground(map){
     for (let i = 0; i < 6; i++) {
         for (let y = 0; y < 9; y++) {
-            for (let z = 0; z < oldColors.length; z++) {
-                if (oldColors[z][map[i][y].color]){
-                    map[i][y].color = oldColors[z][map[i][y].color]
-                }
-            }
+            map[i][y].color = colors[map[i][y].faceId].color
             map[i][y].obj.style.backgroundColor = map[i][y].color
         }
     }
