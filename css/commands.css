@@ -1,0 +1,26 @@
+#commands{
+    display: flex;
+    width: 100%; min-height: var(--moves-button-size);
+    /* background-color: red; */
+    gap: var(--padding-size);
+}
+#commands button{
+    color: white;
+    background-color: black;
+}
+
+#commands .reset{
+    flex: 1;
+    display: grid;
+    place-items: center;
+}
+
+#commands .shuffle{
+    height: 100%;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    font-size: 2em;
+    line-height: 0;
+}
+
