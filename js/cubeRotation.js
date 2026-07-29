@@ -1,18 +1,26 @@
 import { cubeMap, updateBackground } from "./cubeMap.js"
 import { layers, layer, resetLayer } from "./layerHandler.js"
 
+// Current animation duration in milliseconds.
+// Can be increased when performing double turns.
 let defaultDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
 export let animationDuration = defaultDuration;
 
 // exemple of input in script.js
 export function layerMove(name, direction, nbRotation=1){
+    // Read the base duration from CSS every time
+    // in case it has been modified dynamically.
     defaultDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
     animationDuration = defaultDuration * parseInt(nbRotation);
     
+    // If a previous animation was interrupted,
+    // restore the layer before starting a new one.
     if (layer.childElementCount !== 0) {
         resetLayer();
     }
 
+    // Multiple layers can be rotated simultaneously
+    // (x, y, z cube rotations for example).
     for (let i = 0; i < name.length; i++) {
         executeLayerMove(name[i], parseInt(direction[i]),  parseInt(nbRotation));
     }
@@ -23,20 +31,22 @@ function executeLayerMove(name, direction, nbRotation){
     const layerGrid = layerName.grid;
     const layerRotateAxis = layerName.rotateAxis.toUpperCase();
 
+    // Update CSS variables used by the animation.
     layer.style.setProperty("--rotate-value", `calc(90deg * ${nbRotation})`)
     document.documentElement.style.setProperty("--animation-duration", animationDuration / 1000)
-    // Because I manage the animation with css, I can just edit the css variables.
-
+    
+    // The animation itself is entirely handled by CSS.
     layer.className = `layer rotate${layerRotateAxis} ${direction > 0 ? "normal" : "reverse"}`;
     layerGrid.forEach(id => { 
         layer.appendChild(document.querySelectorAll(`.cube#${id}`)[0]);
     })
-    // start the css animation here
-
     const move = getMoveData(name, direction);
 
+    // Update the internal cube state immediately.
+    // The visual animation will catch up afterwards.
     for (let i = 0; i < nbRotation; i++) {
-        if (!move.oneLayer){ // for the moves : M, E, S, we don't need to rotate a face.
+        // M, E and S moves do not rotate a visible face.
+        if (!move.oneLayer){
             rotateFace(move.face, move.direct);
         }
         rotateSides(
@@ -45,7 +55,10 @@ function executeLayerMove(name, direction, nbRotation){
             move.direct
         );
     }
-    console.log(cubeMap)
+    console.log(cubeMap);
+
+    // Once the animation ends, restore the layer
+    // and repaint the stickers.
     setTimeout(() => {
         layer.className = "layer";
         updateBackground(cubeMap);
@@ -61,22 +74,32 @@ function getLayerByName(name){
 }
 
 function getMoveData(name, direction){
+    // Returns every piece of information required
+    // to perform a move:
+    // - face to rotate,
+    // - adjacent sides,
+    // - affected sticker indices,
+    // - rotation direction.
     switch(name){
         case "frontLayer":
             return{
                 face: cubeMap[0],
-                sides: [        // staring at the face :
-                    cubeMap[1], // top face,
-                    cubeMap[2], // right face,
-                    cubeMap[5], // bottom face,
-                    cubeMap[3]  // left face.
+                // Adjacent faces ordered clockwise
+                // when looking directly at the front face.
+                sides: [
+                    cubeMap[1],
+                    cubeMap[2],
+                    cubeMap[5],
+                    cubeMap[3]
                 ],
-                sideIndex: [    // activating the debug mode helps a lot.
-                                // it is read as:
-                    [7, 8, 9],  // from the left to the right,
-                    [1, 4, 7],  // from the top to the bottom,
-                    [1, 2, 3],  // from the left to the right,
-                    [3, 6, 9]   // from the top to the bottom.
+                // Stickers affected on each side.
+                // Debug mode is very useful to visualize
+                // these coordinates.
+                sideIndex: [  
+                    [7, 8, 9],
+                    [1, 4, 7],
+                    [1, 2, 3],
+                    [3, 6, 9] 
                 ],
                 direct: direction,
                 oneLayer: false
@@ -96,6 +119,8 @@ function getMoveData(name, direction){
                     [1, 2, 3],
                     [7, 4, 1]
                 ],
+                // Looking at the back face reverses
+                // the perceived rotation direction.
                 direct: direction * -1,
                 oneLayer: false
             };
@@ -172,6 +197,9 @@ function getMoveData(name, direction){
                 oneLayer: false
             }
 
+        // Slice moves.
+        // They only affect the middle layer and
+        // therefore have no visible face to rotate.
         case "midXLayer":
             return{
                 sides: [
@@ -227,6 +255,8 @@ function getMoveData(name, direction){
 }
 
 function rotateFace(face, direction){
+    // Create a snapshot of the current face
+    // before overwriting any sticker.
     const faceTemp = Array();
     for (let i = 0; i < face.length; i++) {
         faceTemp.push({
@@ -235,7 +265,9 @@ function rotateFace(face, direction){
         })        
     }
 
+    // Clockwise permutation.
     let faceTempIndex = [6, 3, 0, 7, 4, 1, 8, 5, 2]
+    // Counter-clockwise permutation.
     if (direction < 0) faceTempIndex.reverse();
 
     for (let i = 0; i < face.length; i++) {
@@ -244,6 +276,8 @@ function rotateFace(face, direction){
 }
 
 function rotateSides(side1, side2, side3, side4, sideIndex, direction){
+    // Temporary storage for the four rows/columns
+    // exchanged during the move.
     const faceTemp1 = Array();
     const faceTemp2 = Array();
     const faceTemp3 = Array();
@@ -254,6 +288,8 @@ function rotateSides(side1, side2, side3, side4, sideIndex, direction){
     const sideIndex4 = sideIndex[3];
 
     for (let i = 0; i < 3; i++) {
+        // Some strips must be reversed when moving
+        // between faces with different orientations.
         let counterClockwiseIndex;
         let clockwiseIndex;
 
@@ -280,6 +316,7 @@ function rotateSides(side1, side2, side3, side4, sideIndex, direction){
         });
     }
 
+    // Clockwise cycle.
     let faceTempIndex = [faceTemp4, faceTemp1, faceTemp2, faceTemp3]
     let sideList = [
         [side1, sideIndex1],
@@ -287,6 +324,7 @@ function rotateSides(side1, side2, side3, side4, sideIndex, direction){
         [side3, sideIndex3],
         [side4, sideIndex4],
     ]
+    // Counter-clockwise cycle.
     if (direction < 0) faceTempIndex = swapIndex(faceTempIndex, [2, 3, 0, 1]);
 
     for (let i = 0; i < 4; i++) {
@@ -297,6 +335,8 @@ function rotateSides(side1, side2, side3, side4, sideIndex, direction){
 }
 
 function swapIndex(list, newIndex){
+    // Returns a reordered copy of an array
+    // according to the provided indices.
     let temp = Array()
     for (let i = 0; i < list.length; i++) {
         temp[i] = list[newIndex[i]];
@@ -305,6 +345,8 @@ function swapIndex(list, newIndex){
 }
 
 function swapStickers(sticker, target){
+    // Only sticker data is exchanged.
+    // Cubelet positions remain unchanged.
     sticker.faceId = target.faceId
     sticker.color = target.color
 }

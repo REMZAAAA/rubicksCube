@@ -2,18 +2,26 @@ const tempLayer = document.createElement("div");
 tempLayer.className = "layer";
 
 export const mainCube = document.querySelector("#mainCube");
+// Temporary container used to animate rotations.
+// Cubes involved in a move are moved into this
+// element, rotated, then moved back into mainCube.
 export const layer = tempLayer;
 
-// Here's how I see it:
-// Instead of seeing it directly in 3D,
-// I imagine it in 2D first, we got 3 set of 9 cubes distributed like so:
+// Concept:
+// Instead of thinking about the cube in 3D,
+// each movable layer is represented as a 3×3 grid:
+//
 // [] [] []
 // [] [] []
 // [] [] []
-// To be able to move a face I create an element called "layer",
-// I simply add the 9 faces i need for the movement.
+//
+// When a move is performed, the corresponding
+// 9 cube are moved into the temporary "layer"
+// element and rotated together.
 
 export function resetLayer(){
+    // Restore every cube currently inside the
+    // temporary layer back to the main cube.
     let temp = layer.firstChild;
     
     while(layer.firstChild){
@@ -22,10 +30,13 @@ export function resetLayer(){
     }
 }
 
-// If you try to understand why the grid are like that,
-// I suggest you to add the class "showCell" on the div#mainCube.
-// or activate the debug mode in the menu (top right of the canvas).
+// To better understand these grids,
+// enable the "showCell" class on #mainCube
+// or activate debug mode in the interface.
+// Each cube displays its ID, making it easier
+// to visualize how the layers are built.
 export const layers = [
+    // Front face (F)
     {
         "name": "frontLayer",
         "grid": [
@@ -35,6 +46,7 @@ export const layers = [
                 ],
         "rotateAxis": "z"
     },
+    // Back face (B)
     {
         "name": "backLayer",
         "grid": [
@@ -44,7 +56,7 @@ export const layers = [
                 ],
         "rotateAxis": "z"
     },
-        
+    // Left face (L)
     {
         "name": "leftLayer",
         "grid": [
@@ -54,6 +66,7 @@ export const layers = [
                 ],
         "rotateAxis": "x"
     },
+    // Right face (R)
     {
         "name": "rightLayer",
         "grid": [
@@ -63,7 +76,7 @@ export const layers = [
                 ],
         "rotateAxis": "x"
     },
-        
+    // Upper face (U)
     {
         "name": "topLayer",
         "grid": [
@@ -73,6 +86,7 @@ export const layers = [
                 ],
         "rotateAxis": "y"
     },
+    // Down face (D)
     {
         "name": "bottomLayer",
         "grid": [
@@ -82,7 +96,7 @@ export const layers = [
                 ],
         "rotateAxis": "y"
     },
-        
+    // Middle slice parallel to L/R faces (M)
     {
         "name": "midXLayer",
         "grid": [
@@ -92,6 +106,7 @@ export const layers = [
                 ],
         "rotateAxis": "x"
     },
+    // Middle slice parallel to U/D faces (E)
     {
         "name": "midYLayer",
         "grid": [
@@ -101,6 +116,7 @@ export const layers = [
                 ],
         "rotateAxis": "y"
     },
+    // Middle slice parallel to F/B faces (S)
     {
         "name": "midZLayer",
         "grid": [

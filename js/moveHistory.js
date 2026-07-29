@@ -1,3 +1,11 @@
+// Maps every move to its inverse.
+// Used to simplify move history by detecting
+// cancellations and equivalent move sequences.
+//
+// Examples:
+// F  <-> F'
+// F2 <-> F'2
+// x  <-> x'
 const opposite = {
     "F": "F'",
     "F'": "F",
@@ -94,39 +102,57 @@ const historyBar = document.getElementById("history");
 const history = Array();
 
 export function resetHistory(){
+    // Remove every move from both the UI
+    // and the internal history array.
     removeMove(history.length);
 }
 
 export function addMove(move){
+    // Add a move to the history array
+    history.push(move);
+    // and display it in the history panel.
     const moveElement = document.createElement("p");
     moveElement.innerText = move;
-    history.push(move);
     historyBar.appendChild(moveElement);
 }
 
-export function removeMove(nb){
-    for (let i = 0; i < nb; i++) {
+export function removeMove(N){
+    // Remove the last N moves from both
+    // the history array and the DOM.
+    for (let i = 0; i < N; i++) {
         historyBar.removeChild(historyBar.lastChild)
         history.pop();
     }
 }
 
 export function checkForDouble(){
+    // Simplifies consecutive identical moves.
+    //
+    // Examples:
+    // F F     -> F2
+    // F2 F2   -> nothing
+    // F'2 F   -> F'
+    //
+    // Called after adding a new move.
     if (history.length > 1){
         const move = history[history.length - 1];
         const lastMove = history[history.length - 2];
         let newMove;
-        console.log(lastMove, move)
+
+        // F F -> F2    
         if (move === lastMove && move[move.length - 1] !== '2'){
-            removeMove(2);          // remove duplicates,
-            newMove = `${move}2`;   // replace it with [move]2.
-            addMove(newMove);       // e.g. F F -> F2
+            removeMove(2);
+            newMove = `${move}2`;
+            addMove(newMove);
+        // F'2 F -> F'
         }else if (lastMove == `${opposite[move]}2`){
             removeMove(2);
             addMove(opposite[move])
+        // F F2 -> F'
         }else if (move === `${lastMove}2`){
             removeMove(2);
             addMove(opposite[lastMove])
+        // F2 F2 -> ∅
         }else if (move === lastMove && move[move.length - 1] === '2'){
             removeMove(2);
         }
@@ -134,18 +160,32 @@ export function checkForDouble(){
 }
 
 export function checkForTriple(){
+    // Simplifies sequences of three identical turns.
+    //
+    // Example:
+    // F2 F -> F'
+    //
+    // Equivalent to three quarter turns
+    // in the same direction.
     if (history.length > 1){
         const move = history[history.length - 1];
         const lastMove = history[history.length - 2];
         const double = `${move}2`
+
         if (lastMove === double && opposite[move]){
-            removeMove(2);             // replace by opposite: 
-            addMove(opposite[move]);   // F2 F -> F'
+            removeMove(2);
+            addMove(opposite[move]);
         }
     }
 }
 
 export function checkForOpposite(){
+    // Cancels opposite consecutive moves.
+    //
+    // Examples:
+    // F F' -> ∅
+    // R' R -> ∅
+    // x x' -> ∅
     if (history.length > 1){
         const move = history[history.length - 1];
         const lastMove = history[history.length - 2];
