@@ -5,36 +5,57 @@ import { layerMove, animationDuration } from "./cubeRotation.js"
 import { resetHistory, addMove, checkForDouble, checkForTriple, checkForOpposite } from "./moveHistory.js"
 import { updateColor, resetColor } from "./colors.js"
 import { btnList, shuffleCube } from "./shuffle.js"
+import { getPieceFaceId } from "./algorithm.js"
 
+// The temporary rotation layer must be attached
+// to the cube before any move can be animated.
 mainCube.appendChild(layer);
 
-btnList.forEach(element => {                    // Whenever you click on a button (move).
-    element.addEventListener("click", () => {   // It get the value of the button.
-        // Then separate the names from the directions.
+btnList.forEach(element => {         
+    // Every move button contains all the data needed
+    // to perform the corresponding move.
+    element.addEventListener("click", () => {
+        // Parse the button value.
+        // Example:
+        // "frontLayer 1 1"
+        // "topLayer midYLayer -1 -1 1 1"
         const btnContent = element.value.split(" ");
         const separator = (btnContent.length / 3);
 
+        // Extract:
+        // - layer names,
+        // - directions,
+        // - number of quarter turns.
         const btnValue = btnContent.slice(0, separator);
         const btnDirection = btnContent.slice(separator, separator * 2);
         const btnNbRotation = btnContent.slice(separator * 2, btnContent.length);
 
-        // It add the move to the history.
+        // add the move to the history.
         addMove(element.textContent);
-        checkForDouble()    // It then checks if it's possible
-        checkForTriple()    // to shorten the move into one.
-        checkForOpposite()  // e.g. F F -> F2; F F F -> F'; F F' -> (nothing c:)
-
+        // Simplify the history whenever possible.
+        //
+        // Examples:
+        // F F     -> F2
+        // F F F   -> F'
+        // F F'    -> ∅
+        checkForDouble()
+        checkForTriple()
+        checkForOpposite()
+        
         // Exemple of input:
         // F: ["frontLayer"], ["1"], 1
         // u: ["topLayer", midYlayer], ["-1", "-1"], 1
         console.log("\n#############################################\n\n")
         console.log("before move")
         renderMap(cubeMap)
+
         layerMove(btnValue, btnDirection, btnNbRotation);
+
         console.log("after move")
         renderMap(cubeMap)
 
-        // disable every button when one is clicked.
+        // Prevent move spam while an animation
+        // is currently playing.
         btnList.forEach(el => {
             el.disabled = true;
             setTimeout(() => {
@@ -47,17 +68,22 @@ btnList.forEach(element => {                    // Whenever you click on a butto
 
 const resetEL = document.querySelector("#commands .reset")
 resetEL.addEventListener("click", () => {
+    // Restore the cube to its solved state
+    // and clear the move history.
     resetMap();
     resetHistory();
 });
 
 const shuffleEl = document.querySelector("#commands .shuffle")
 shuffleEl.addEventListener("click", async () => {
+    // Perform a random scramble sequence.
     await shuffleCube();
 });
 
 const colorInputEl = document.querySelectorAll(".colors input");
 colorInputEl.forEach(element => {
+    // Update cube colors whenever the user
+    // changes a color picker.
     element.addEventListener("change", () => {
         updateColor();
     });
@@ -65,6 +91,8 @@ colorInputEl.forEach(element => {
 
 const debugInput = document.querySelector("#menu .debug input");
 debugInput.addEventListener("click", () => {
+    // Debug mode displays cube IDs
+    // directly on the cube.
     if (debugInput.checked){
         mainCube.classList.add("showCell");
     } else{
@@ -74,7 +102,19 @@ debugInput.addEventListener("click", () => {
 
 const resetColorEl = document.querySelector("#menu .resetColor button")
 resetColorEl.addEventListener("click", () => {
+    // Restore the default cube color scheme.
     resetColor();
 });
 
 renderMap(cubeMap);
+
+const tests = [
+    getPieceFaceId("corner", [0, 1, 2]),
+    getPieceFaceId("corner", [0, 1]),
+    getPieceFaceId("corner", [0]),
+    getPieceFaceId("edge"  , [0, 1]),
+    getPieceFaceId("edge"  , [0]),
+    getPieceFaceId("center", [0]),
+]
+
+console.log(tests)
