@@ -11,16 +11,22 @@ let rx = -30;
 let ry = -45;
 
 canvas.addEventListener("pointerdown", e => {
+    // Ignore interactions coming from the menu.
     if (e.target.closest("#menu")) return;
     
     drag = true;
+    // Store the pointer position at the start
+    // of the drag operation.
     x = e.clientX;
     y = e.clientY;
 
+    // Capture the pointer so dragging continues
+    // even if the cursor leaves the cube area.
     mainCube.setPointerCapture(e.pointerId);
 });
 
 canvas.addEventListener("pointermove", e => {
+    // Only rotate the cube while dragging.
     if (!drag) return;
 
     ry += (e.clientX - x) * 0.4;
@@ -30,9 +36,13 @@ canvas.addEventListener("pointermove", e => {
     y = e.clientY;
 
     mainCube.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+
+    // In debug mode, cube IDs must remain readable.
+    // Rotate them in the opposite direction so they
+    // always face the camera.
     if (mainCube.classList.contains("showCell")){
         cellId.forEach(element => {
-            element.style.transform = `rotateX(${-rx}deg) rotateY(${-ry}deg)`;
+            element.style.transform = `rotateY(${-ry}deg) rotateX(${-rx}deg)`;
         });
     }
 });
