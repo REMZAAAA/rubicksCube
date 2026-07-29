@@ -17,6 +17,16 @@
         <div id="history"></div>
 
         <div id="canvas">
+            <!--
+                Rubik's Cube representation.
+
+                The cube is built from 27 cubes (c1 → c27).
+                Each cube contains:
+                - 6 faces (one per direction)
+                - a debug paragraph displaying its ID.
+
+                Face colors are assigned dynamically by JavaScript.
+            -->
             <div id="mainCube" class="">
                 <div id="c1" class="cube">
                     <div class="face"></div>
@@ -396,9 +406,15 @@
             <button class="shuffle">⇆</button>
         </div>
     </aside>
+    
+    <!--
+        script.js:
+            Main application logic.
 
-    
-    
+        pan.js:
+            Mouse/touch controls used to
+            rotate the cube in the viewport.
+    -->
     <script type="module" src="./js/script.js"></script>
     <script src="./js/pan.js"></script>
 
