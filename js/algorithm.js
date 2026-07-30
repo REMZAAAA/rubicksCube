@@ -119,5 +119,27 @@ export function setCross(){
         }
 
         console.log(edgeFaces)
+
+        // for each faces there's 4 ways the edge can be placed,
+        // e.g. for an edge red and white (center of the cross red):
+
+        // on the red face AND movable by the red face,
+        //   (means that edgeFaces contain 0 but must not be the last item)
+        // on the white face AND movable by the white face,
+        //   (means that edgeFaces contain {white faceID} but must not be the last item)
+        // on the opposite face AND movable by the opposite face (orange for this exemple)
+        //   (means that edgeFaces contain 4 but must not be the last item)
+        // on any other face.
+
+        // The algorithm is the following (red & white) :
+        // first case :
+        // L2 B(until the edge is correctly placed) L2 U2 z'
+        // second case :
+        // U(until the edge is correctly placed) z'
+        // third case :
+        // B(until the edge is on the left of the white face) L U L' U(until the edge is correctly placed) z'
+        // last case :
+        // take the edge on the opposite face (L', B or R) U (L, B' OR R')
+        // then follow either the second case or the third.
     }
 }
