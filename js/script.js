@@ -5,7 +5,7 @@ import { layerMove, animationDuration } from "./cubeRotation.js"
 import { resetHistory, addMove, checkForDouble, checkForTriple, checkForOpposite } from "./moveHistory.js"
 import { updateColor, resetColor } from "./colors.js"
 import { btnList, shuffleCube } from "./shuffle.js"
-import { getPieceFaceId } from "./algorithm.js"
+import { getPieceByFaceId, setCross } from "./algorithm.js"
 
 // The temporary rotation layer must be attached
 // to the cube before any move can be animated.
@@ -53,6 +53,8 @@ btnList.forEach(element => {
 
         console.log("after move")
         renderMap(cubeMap)
+
+        setCross();
 
         // Prevent move spam while an animation
         // is currently playing.
@@ -109,12 +111,12 @@ resetColorEl.addEventListener("click", () => {
 renderMap(cubeMap);
 
 const tests = [
-    getPieceFaceId("corner", [0, 1, 2]),
-    getPieceFaceId("corner", [0, 1]),
-    getPieceFaceId("corner", [0]),
-    getPieceFaceId("edge"  , [0, 1]),
-    getPieceFaceId("edge"  , [0]),
-    getPieceFaceId("center", [0]),
+    getPieceByFaceId("corner", [0, 1, 2]),
+    getPieceByFaceId("corner", [0, 1]),
+    getPieceByFaceId("corner", [0]),
+    getPieceByFaceId("edge"  , [0, 1]),
+    getPieceByFaceId("edge"  , [0]),
+    getPieceByFaceId("center", [0]),
 ]
 
 console.log(tests)
