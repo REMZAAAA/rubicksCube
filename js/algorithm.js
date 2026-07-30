@@ -1,4 +1,5 @@
 import { cubeMap } from "./cubeMap.js"
+import { layers } from "./layerHandler.js";
 
 // resolution algorithm steps:
 // 1. white cross
@@ -8,7 +9,7 @@ import { cubeMap } from "./cubeMap.js"
 // 5. matching yellow corner
 // 6. final moveset
 
-export function getPieceFaceId(piece, faceIds){
+export function getPieceByFaceId(piece, faceIds){
     // We get pieces by faceId and not color,
     // cause user can make every face the same color
     // however faceId is unique to the face and can't be changed.
@@ -57,4 +58,66 @@ export function getPieceFaceId(piece, faceIds){
         }
     });
     return pieces
+}
+
+const layerToFace = {
+    "frontLayer": 0,
+    "backLayer": 4,
+    "leftLayer": 3,
+    "rightLayer": 2,
+    "topLayer": 1,
+    "bottomLayer": 5,
+}
+
+function getFacesByCube(cube){
+    const temp = Array();
+    for (let i = 0; i < layers.length - 3; i++) {
+        if (layers[i].grid.includes(`c${cube}`)){
+            temp.push(layerToFace[layers[i].name])
+        }
+    }
+    // should return an Array which contains
+    // min 1, max 3 integers (faces).
+    return temp;
+}
+
+export function setCross(){
+    // first get center of the front face.
+    const center = cubeMap[0][4];
+    const centerCube = getFacesByCube(center.cube)[0]
+
+    // let edges = getPieceByFaceId("edge", [center.faceId])
+    // console.log(center, edges)
+
+    const faces = [cubeMap[1], cubeMap[2], cubeMap[5], cubeMap[3]]
+    const oppositeFace = cubeMap[4];
+
+    for (let i = 0; i < faces.length; i++) {
+        // search an edge with the two face center
+        // first center is always the one we building the cross on,
+        // the second is in this order: top, right, bottom, left.
+        const secondCenter = faces[i][4]
+        const secondCenterCube = getFacesByCube(faces[i][4].cube)[0]
+        const edge = getPieceByFaceId("edge", [center.faceId, secondCenter.faceId])
+        // getFacesByCube(edge)
+        const edgeCube = Number(Object.keys(edge)[0])
+        const edgeFaces = getFacesByCube(edgeCube)
+
+        console.log(edge)
+        console.log(edgeFaces)
+        console.log([centerCube, secondCenterCube])
+
+        for (let j = 0; j < cubeMap[edgeFaces[0]].length; j++) {
+            if (cubeMap[edgeFaces[0]][j].cube === edgeCube){
+                // console.log(cubeMap[edgeFaces[0]][j]);
+                if (cubeMap[edgeFaces[0]][j].faceId === center.faceId){
+                    edgeFaces.push(edgeFaces[1])
+                } else{
+                    edgeFaces.push(edgeFaces[0])
+                }
+            }
+        }
+
+        console.log(edgeFaces)
+    }
 }
