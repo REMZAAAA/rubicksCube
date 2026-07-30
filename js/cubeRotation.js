@@ -346,7 +346,7 @@ function swapIndex(list, newIndex){
 
 function swapStickers(sticker, target){
     // Only sticker data is exchanged.
-    // Cubelet positions remain unchanged.
+    // Cube positions remain unchanged.
     sticker.faceId = target.faceId
     sticker.color = target.color
 }

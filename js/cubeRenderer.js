@@ -16,13 +16,12 @@ function getLineColor(list=null, y=0){
 
 export function renderMap(list) {
     // Render the cube as a 2D net in the console.
-    //
     // Layout:
     //
-    //       [4]
-    //       [1]
+    //     [4]
+    //     [1]
     // [3] [0] [2]
-    //       [5]
+    //     [5]
     //
     // Each face is displayed as a 3x3 grid using
     // color abbreviations instead of full color names.
