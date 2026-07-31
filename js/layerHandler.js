@@ -78,7 +78,7 @@ export const layers = [
     },
     // Upper face (U)
     {
-        "name": "topLayer",
+        "name": "upperLayer",
         "grid": [
                 "c19","c20","c21",
                 "c10","c11","c12",
@@ -88,7 +88,7 @@ export const layers = [
     },
     // Down face (D)
     {
-        "name": "bottomLayer",
+        "name": "downLayer",
         "grid": [
                 "c7","c8","c9",
                 "c16","c17","c18",
