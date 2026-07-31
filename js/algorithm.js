@@ -65,8 +65,8 @@ const layerToFace = {
     "backLayer": 4,
     "leftLayer": 3,
     "rightLayer": 2,
-    "topLayer": 1,
-    "bottomLayer": 5,
+    "upperLayer": 1,
+    "downLayer": 5,
 }
 
 function getFacesByCube(cube){
@@ -120,26 +120,121 @@ export function setCross(){
 
         console.log(edgeFaces)
 
-        // for each faces there's 4 ways the edge can be placed,
-        // e.g. for an edge red and white (center of the cross red):
+        // KING algorithm :
+        // faces are kingdoms, center and edge are lands,
+        // the front, upper and back face are neighbors,
+        // the rest are foreign.
 
-        // on the red face AND movable by the red face,
-        //   (means that edgeFaces contain 0 but must not be the last item)
-        // on the white face AND movable by the white face,
-        //   (means that edgeFaces contain {white faceID} but must not be the last item)
-        // on the opposite face AND movable by the opposite face (orange for this exemple)
-        //   (means that edgeFaces contain 4 but must not be the last item)
-        // on any other face.
+        // An edge contain 2 colors, thus it appear between EXACTLY 2 faces
+        // even tho an edge is placed between 2 faces, he still belong to
+        // only one of them, we call KING the face where the edge appear but
+        // the sticker is not the same color as the center of the cross.
 
-        // The algorithm is the following (red & white) :
-        // first case :
-        // L2 B(until the edge is correctly placed) L2 U2 z'
-        // second case :
-        // U(until the edge is correctly placed) z'
-        // third case :
-        // B(until the edge is on the left of the white face) L U L' U(until the edge is correctly placed) z'
-        // last case :
-        // take the edge on the opposite face (L', B or R) U (L, B' OR R')
-        // then follow either the second case or the third.
+        // CASE 1 - 3 (edge is on a neighbor face)
+
+        // CASE 1
+        // the edge is placed on the front face
+
+        // If the other face is foreign:
+        //   MOVE the foreign face 2 times then CASE 3.
+        // Else if the front face is the KING of this edge:
+        //   CASE 2.
+        // Else:
+        //   DO nothing (edge already correctly placed).
+
+        // CASE 2
+        // the edge is placed on the upper face.
+        // 
+        // If the upper face is KING of this edge:
+        //   REPEAT U until the edge is placed between
+        //   the upper and front face.
+        // Else:
+        //   REPEAT U until the edge is placed between
+        //   the upper and back face, then CASE 3.
+
+        // CASE 3
+        // the edge is placed on the back face.
+        // 
+        // If the back face is KING of this edge:
+        //   REPEAT B until the edge is placed between
+        //   the upper and back face, then
+        //   DO: B L U' L'
+        // Else:
+        //   REPEAT B until the edge is placed between
+        //   the upper and back face, then CASE 2.
+
+        // CASE 4
+        // the edge is on two foreign face.
+        // DO: D (if the edge if is on the left and down face)
+        // or: D' (if the edge is on the right and down face)
+        // then CASE 3.
+
+        // When the edge is correctly placed
+        // DO: z' and REPEAT KING algorithm
     }
 }
+
+
+
+
+
+// KING algorithm
+//
+// Faces are kingdoms. Centers and edges are lands.
+// The front, upper, and back faces are considered neighbors.
+// The remaining faces are foreign kingdoms.
+//
+// An edge contains 2 colors, therefore it appears between
+// EXACTLY 2 faces.
+//
+// Even though an edge is located between 2 faces, it belongs
+// to only one kingdom. We call KING the face where the edge
+// appears while its sticker color does NOT match the center
+// color of the cross.
+
+// CASES 1 - 3 (the edge is on a neighboring face)
+
+// CASE 1
+// The edge is on the front face.
+//
+// If the other face is foreign:
+//   ROTATE the foreign face twice, then go to CASE 3.
+// Else if the front face is the KING of this edge:
+//   Go to CASE 2.
+// Else:
+//   DO NOTHING (the edge is already correctly placed).
+
+// CASE 2
+// The edge is on the upper face.
+//
+// If the upper face is the KING of this edge:
+//   REPEAT U until the edge is located between
+//   the upper and front faces.
+// Else:
+//   REPEAT U until the edge is located between
+//   the upper and back faces, then go to CASE 3.
+
+// CASE 3
+// The edge is on the back face.
+//
+// If the back face is the KING of this edge:
+//   REPEAT B until the edge is located between
+//   the upper and back faces, then execute:
+//   B L U' L'
+// Else:
+//   REPEAT B until the edge is located between
+//   the upper and back faces, then go to CASE 2.
+
+// CASE 4
+// The edge is located between two foreign faces.
+//
+// Execute:
+//   D' B' D (if the edge is between the left and down faces)
+// or
+//   D B D' (if the edge is between the right and down faces)
+//
+// Then go to CASE 3.
+
+// When the edge is correctly placed:
+//   Execute z'
+//   Then REPEAT the KING Algorithm.
