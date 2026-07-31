@@ -18,7 +18,7 @@ btnList.forEach(element => {
         // Parse the button value.
         // Example:
         // "frontLayer 1 1"
-        // "topLayer midYLayer -1 -1 1 1"
+        // "upperLayer midYLayer -1 -1 1 1"
         const btnContent = element.value.split(" ");
         const separator = (btnContent.length / 3);
 
@@ -44,7 +44,7 @@ btnList.forEach(element => {
         
         // Exemple of input:
         // F: ["frontLayer"], ["1"], 1
-        // u: ["topLayer", midYlayer], ["-1", "-1"], 1
+        // u: ["upperLayer", midYlayer], ["-1", "-1"], 1
         console.log("\n#############################################\n\n")
         console.log("before move")
         renderMap(cubeMap)

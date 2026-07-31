@@ -160,7 +160,7 @@ function getMoveData(name, direction){
                 direct: direction,
                 oneLayer: false
             };
-        case "topLayer":
+        case "upperLayer":
             return{
                 face: cubeMap[1],
                 sides: [
@@ -178,7 +178,7 @@ function getMoveData(name, direction){
                 direct: direction * -1,
                 oneLayer: false
             };
-        case "bottomLayer":
+        case "downLayer":
             return{
                 face: cubeMap[5],
                 sides: [
