@@ -114,6 +114,10 @@ export function addMove(move){
     const moveElement = document.createElement("p");
     moveElement.innerText = move;
     historyBar.appendChild(moveElement);
+    
+    checkForDouble()
+    checkForTriple()
+    checkForOpposite()
 }
 
 export function removeMove(N){
