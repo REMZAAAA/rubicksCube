@@ -30,17 +30,9 @@ btnList.forEach(element => {
         const btnDirection = btnContent.slice(separator, separator * 2);
         const btnNbRotation = btnContent.slice(separator * 2, btnContent.length);
 
+        console.log(btnValue, btnDirection, btnNbRotation)
         // add the move to the history.
         addMove(element.textContent);
-        // Simplify the history whenever possible.
-        //
-        // Examples:
-        // F F     -> F2
-        // F F F   -> F'
-        // F F'    -> ∅
-        checkForDouble()
-        checkForTriple()
-        checkForOpposite()
         
         // Exemple of input:
         // F: ["frontLayer"], ["1"], 1
@@ -49,12 +41,10 @@ btnList.forEach(element => {
         console.log("before move")
         renderMap(cubeMap)
 
-        layerMove(btnValue, btnDirection, btnNbRotation);
+        layerMove(btnValue, btnDirection, cubeMap, btnNbRotation, true);
 
         console.log("after move")
         renderMap(cubeMap)
-
-        setCross();
 
         // Prevent move spam while an animation
         // is currently playing.
@@ -67,6 +57,12 @@ btnList.forEach(element => {
         
     });
 });
+
+export function doCrossAlgo(){
+    setCross();
+}
+
+window.doCrossAlgo = doCrossAlgo;
 
 const resetEL = document.querySelector("#commands .reset")
 resetEL.addEventListener("click", () => {
@@ -111,12 +107,12 @@ resetColorEl.addEventListener("click", () => {
 renderMap(cubeMap);
 
 const tests = [
-    getPieceByFaceId("corner", [0, 1, 2]),
-    getPieceByFaceId("corner", [0, 1]),
-    getPieceByFaceId("corner", [0]),
-    getPieceByFaceId("edge"  , [0, 1]),
-    getPieceByFaceId("edge"  , [0]),
-    getPieceByFaceId("center", [0]),
+    getPieceByFaceId("corner", [0, 1, 2], cubeMap),
+    getPieceByFaceId("corner", [0, 1], cubeMap),
+    getPieceByFaceId("corner", [0], cubeMap),
+    getPieceByFaceId("edge"  , [0, 1], cubeMap),
+    getPieceByFaceId("edge"  , [0], cubeMap),
+    getPieceByFaceId("center", [0], cubeMap),
 ]
 
 console.log(tests)
