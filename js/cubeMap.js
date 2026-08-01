@@ -50,7 +50,6 @@ const faceData = [
 ]
 
 export let cubeMap = initMap();
-console.log(cubeMap)
 
 export function resetMap(){
     cubeMap = initMap();
