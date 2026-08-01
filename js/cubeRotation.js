@@ -1,4 +1,4 @@
-import { cubeMap, updateBackground } from "./cubeMap.js"
+import { updateBackground } from "./cubeMap.js"
 import { layers, layer, resetLayer } from "./layerHandler.js"
 
 // Current animation duration in milliseconds.
@@ -7,40 +7,45 @@ let defaultDuration = parseFloat(getComputedStyle(document.documentElement).getP
 export let animationDuration = defaultDuration;
 
 // exemple of input in script.js
-export function layerMove(name, direction, nbRotation=1){
+export function layerMove(name, direction, map, nbRotation=1, animated=false){
     // Read the base duration from CSS every time
     // in case it has been modified dynamically.
-    defaultDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
-    animationDuration = defaultDuration * parseInt(nbRotation);
-    
-    // If a previous animation was interrupted,
-    // restore the layer before starting a new one.
-    if (layer.childElementCount !== 0) {
-        resetLayer();
+    if (animated){
+        defaultDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
+        animationDuration = defaultDuration * parseInt(nbRotation);
+        
+        // If a previous animation was interrupted,
+        // restore the layer before starting a new one.
+        if (layer.childElementCount !== 0) {
+            resetLayer();
+        }
     }
 
     // Multiple layers can be rotated simultaneously
     // (x, y, z cube rotations for example).
     for (let i = 0; i < name.length; i++) {
-        executeLayerMove(name[i], parseInt(direction[i]),  parseInt(nbRotation));
+        executeLayerMove(name[i], parseInt(direction[i]), map, parseInt(nbRotation), animated);
     }
 }
 
-function executeLayerMove(name, direction, nbRotation){
-    const layerName = getLayerByName(name);
-    const layerGrid = layerName.grid;
-    const layerRotateAxis = layerName.rotateAxis.toUpperCase();
+function executeLayerMove(name, direction, map, nbRotation, animated){
+    if (animated){
+        const layerName = getLayerByName(name);
+        const layerGrid = layerName.grid;
+        const layerRotateAxis = layerName.rotateAxis.toUpperCase();
 
-    // Update CSS variables used by the animation.
-    layer.style.setProperty("--rotate-value", `calc(90deg * ${nbRotation})`)
-    document.documentElement.style.setProperty("--animation-duration", animationDuration / 1000)
-    
-    // The animation itself is entirely handled by CSS.
-    layer.className = `layer rotate${layerRotateAxis} ${direction > 0 ? "normal" : "reverse"}`;
-    layerGrid.forEach(id => { 
-        layer.appendChild(document.querySelectorAll(`.cube#${id}`)[0]);
-    })
-    const move = getMoveData(name, direction);
+        // Update CSS variables used by the animation.
+        layer.style.setProperty("--rotate-value", `calc(90deg * ${nbRotation})`)
+        document.documentElement.style.setProperty("--animation-duration", animationDuration / 1000)
+        
+        // The animation itself is entirely handled by CSS.
+        layer.className = `layer rotate${layerRotateAxis} ${direction > 0 ? "normal" : "reverse"}`;
+        layerGrid.forEach(id => { 
+            layer.appendChild(document.querySelectorAll(`.cube#${id}`)[0]);
+        })
+    }
+
+    const move = getMoveData(name, direction, map);
 
     // Update the internal cube state immediately.
     // The visual animation will catch up afterwards.
@@ -55,14 +60,19 @@ function executeLayerMove(name, direction, nbRotation){
             move.direct
         );
     }
-    console.log(cubeMap);
+    console.log(map);
 
     // Once the animation ends, restore the layer
     // and repaint the stickers.
-    setTimeout(() => {
-        layer.className = "layer";
-        updateBackground(cubeMap);
-    }, animationDuration)
+    if (animated){
+        setTimeout(() => {
+            layer.className = "layer";
+            updateBackground(map);
+        }, animationDuration)
+    }else{
+        updateBackground(map);
+    }
+    
 }
 
 function getLayerByName(name){
@@ -73,7 +83,7 @@ function getLayerByName(name){
     }
 }
 
-function getMoveData(name, direction){
+function getMoveData(name, direction, map){
     // Returns every piece of information required
     // to perform a move:
     // - face to rotate,
@@ -83,14 +93,14 @@ function getMoveData(name, direction){
     switch(name){
         case "frontLayer":
             return{
-                face: cubeMap[0],
+                face: map[0],
                 // Adjacent faces ordered clockwise
                 // when looking directly at the front face.
                 sides: [
-                    cubeMap[1],
-                    cubeMap[2],
-                    cubeMap[5],
-                    cubeMap[3]
+                    map[1],
+                    map[2],
+                    map[5],
+                    map[3]
                 ],
                 // Stickers affected on each side.
                 // Debug mode is very useful to visualize
@@ -106,12 +116,12 @@ function getMoveData(name, direction){
             };
         case "backLayer":
             return{
-                face: cubeMap[4],
+                face: map[4],
                 sides: [
-                    cubeMap[5],
-                    cubeMap[2],
-                    cubeMap[1],
-                    cubeMap[3]
+                    map[5],
+                    map[2],
+                    map[1],
+                    map[3]
                 ],
                 sideIndex: [
                     [7, 8, 9],
@@ -126,12 +136,12 @@ function getMoveData(name, direction){
             };
         case "leftLayer":
             return{
-                face: cubeMap[3],
+                face: map[3],
                 sides: [
-                    cubeMap[0],
-                    cubeMap[5],
-                    cubeMap[4],
-                    cubeMap[1]
+                    map[0],
+                    map[5],
+                    map[4],
+                    map[1]
                 ],
                 sideIndex: [
                     [1, 4, 7],
@@ -144,12 +154,12 @@ function getMoveData(name, direction){
             };
         case "rightLayer":
             return{
-                face: cubeMap[2],
+                face: map[2],
                 sides: [
-                    cubeMap[1],
-                    cubeMap[4],
-                    cubeMap[5],
-                    cubeMap[0]
+                    map[1],
+                    map[4],
+                    map[5],
+                    map[0]
                 ],
                 sideIndex: [
                     [9, 6, 3],
@@ -162,12 +172,12 @@ function getMoveData(name, direction){
             };
         case "upperLayer":
             return{
-                face: cubeMap[1],
+                face: map[1],
                 sides: [
-                    cubeMap[4],
-                    cubeMap[2],
-                    cubeMap[0],
-                    cubeMap[3]
+                    map[4],
+                    map[2],
+                    map[0],
+                    map[3]
                 ],
                 sideIndex: [
                     [7, 8, 9],
@@ -180,12 +190,12 @@ function getMoveData(name, direction){
             };
         case "downLayer":
             return{
-                face: cubeMap[5],
+                face: map[5],
                 sides: [
-                    cubeMap[0],
-                    cubeMap[2],
-                    cubeMap[4],
-                    cubeMap[3]
+                    map[0],
+                    map[2],
+                    map[4],
+                    map[3]
                 ],
                 sideIndex: [
                     [7, 8, 9],
@@ -203,10 +213,10 @@ function getMoveData(name, direction){
         case "midXLayer":
             return{
                 sides: [
-                    cubeMap[1],
-                    cubeMap[4],
-                    cubeMap[5],
-                    cubeMap[0]
+                    map[1],
+                    map[4],
+                    map[5],
+                    map[0]
                 ],
                 sideIndex: [
                     [8, 5, 2],
@@ -220,10 +230,10 @@ function getMoveData(name, direction){
         case "midYLayer":
             return{
                 sides: [
-                    cubeMap[4],
-                    cubeMap[2],
-                    cubeMap[0],
-                    cubeMap[3]
+                    map[4],
+                    map[2],
+                    map[0],
+                    map[3]
                 ],
                 sideIndex: [
                     [4, 5, 6],
@@ -237,10 +247,10 @@ function getMoveData(name, direction){
         case "midZLayer":
             return{
                 sides: [
-                    cubeMap[1],
-                    cubeMap[2],
-                    cubeMap[5],
-                    cubeMap[3]
+                    map[1],
+                    map[2],
+                    map[5],
+                    map[3]
                 ],
                 sideIndex: [
                     [4, 5, 6],
