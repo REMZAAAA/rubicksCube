@@ -98,38 +98,39 @@ const opposite = {
     "z'2": "z2",
 };
 
-const historyBar = document.getElementById("history");
-const history = Array();
-
-export function resetHistory(){
+export function resetHistory(history, panel){
     // Remove every move from both the UI
     // and the internal history array.
-    removeMove(history.length);
+    removeMove(history, history.length, panel);
 }
 
-export function addMove(move){
+export function addMove(history, move, panel){
     // Add a move to the history array
     history.push(move);
     // and display it in the history panel.
-    const moveElement = document.createElement("p");
-    moveElement.innerText = move;
-    historyBar.appendChild(moveElement);
+    if (panel){
+        const moveElement = document.createElement("p");
+        moveElement.innerText = move;
+        panel.appendChild(moveElement);
+    }
     
-    checkForDouble()
-    checkForTriple()
-    checkForOpposite()
+    checkForDouble(history, panel)
+    checkForTriple(history, panel)
+    checkForOpposite(history, panel)
 }
 
-export function removeMove(N){
+export function removeMove(history, N, panel){
     // Remove the last N moves from both
     // the history array and the DOM.
     for (let i = 0; i < N; i++) {
-        historyBar.removeChild(historyBar.lastChild)
         history.pop();
+        if (panel){
+            panel.removeChild(panel.lastChild)
+        }
     }
 }
 
-export function checkForDouble(){
+export function checkForDouble(history, panel){
     // Simplifies consecutive identical moves.
     //
     // Examples:
@@ -145,25 +146,25 @@ export function checkForDouble(){
 
         // F F -> F2    
         if (move === lastMove && move[move.length - 1] !== '2'){
-            removeMove(2);
             newMove = `${move}2`;
-            addMove(newMove);
+            removeMove(history, 2, panel);
+            addMove(history, newMove, panel);
         // F'2 F -> F'
         }else if (lastMove == `${opposite[move]}2`){
-            removeMove(2);
-            addMove(opposite[move])
+            removeMove(history, 2, panel);
+            addMove(history, opposite[move], panel)
         // F F2 -> F'
         }else if (move === `${lastMove}2`){
-            removeMove(2);
-            addMove(opposite[lastMove])
+            removeMove(history, 2, panel);
+            addMove(history, opposite[lastMove], panel)
         // F2 F2 -> ∅
         }else if (move === lastMove && move[move.length - 1] === '2'){
-            removeMove(2);
+            removeMove(history, 2, panel);
         }
     }
 }
 
-export function checkForTriple(){
+export function checkForTriple(history, panel){
     // Simplifies sequences of three identical turns.
     //
     // Example:
@@ -177,13 +178,13 @@ export function checkForTriple(){
         const double = `${move}2`
 
         if (lastMove === double && opposite[move]){
-            removeMove(2);
-            addMove(opposite[move]);
+            removeMove(history, 2, panel);
+            addMove(history, opposite[move], panel);
         }
     }
 }
 
-export function checkForOpposite(){
+export function checkForOpposite(history, panel){
     // Cancels opposite consecutive moves.
     //
     // Examples:
@@ -194,7 +195,7 @@ export function checkForOpposite(){
         const move = history[history.length - 1];
         const lastMove = history[history.length - 2];
         if (lastMove === opposite[move]){
-            removeMove(2)
+            removeMove(history, 2, panel)
         }
     }
 }
@@ -206,9 +207,9 @@ export const moves = {
     "R": "rightLayer 1 1",
     "U": "upperLayer -1 1",
     "D": "downLayer 1 1",
-    "M": "midXLayer -1 1",
-    "E": "midYLayer 1 1",
-    "S": "midZLayer 1 1",
+    "M": "middleLayer -1 1",
+    "E": "equatorLayer 1 1",
+    "S": "standingLayer 1 1",
 
     "F'": "frontLayer -1 1",
     "B'": "backLayer 1 1",
@@ -216,31 +217,31 @@ export const moves = {
     "R'": "rightLayer -1 1",
     "U'": "upperLayer 1 1",
     "D'": "downLayer -1 1",
-    "M'": "midXLayer 1 1",
-    "E'": "midYLayer -1 1",
-    "S'": "midZLayer -1 1",
+    "M'": "middleLayer 1 1",
+    "E'": "equatorLayer -1 1",
+    "S'": "standingLayer -1 1",
 
-    "x": "rightLayer midXLayer leftLayer 1 1 1 1 1 1",
-    "y": "upperLayer midYLayer downLayer -1 -1 -1 1 1 1",
-    "z": "frontLayer midZLayer backLayer 1 1 1 1 1 1",
+    "x": "rightLayer middleLayer leftLayer 1 1 1 1 1 1",
+    "y": "upperLayer equatorLayer downLayer -1 -1 -1 1 1 1",
+    "z": "frontLayer standingLayer backLayer 1 1 1 1 1 1",
 
-    "x'": "rightLayer midXLayer leftLayer -1 -1 -1 1 1 1",
-    "y'": "upperLayer midYLayer downLayer 1 1 1 1 1 1",
-    "z'": "frontLayer midZLayer backLayer -1 -1 -1 1 1 1",
+    "x'": "rightLayer middleLayer leftLayer -1 -1 -1 1 1 1",
+    "y'": "upperLayer equatorLayer downLayer 1 1 1 1 1 1",
+    "z'": "frontLayer standingLayer backLayer -1 -1 -1 1 1 1",
 
-    "u": "upperLayer midYLayer -1 -1 1 1",
-    "d": "downLayer midYLayer 1 1 1 1",
-    "r": "rightLayer midXLayer 1 1 1 1",
-    "l": "leftLayer midXLayer -1 -1 1 1",
-    "f": "frontLayer midZLayer 1 1 1 1",
-    "b": "backLayer midZLayer -1 -1 1 1",
+    "u": "upperLayer equatorLayer -1 -1 1 1",
+    "d": "downLayer equatorLayer 1 1 1 1",
+    "r": "rightLayer middleLayer 1 1 1 1",
+    "l": "leftLayer middleLayer -1 -1 1 1",
+    "f": "frontLayer standingLayer 1 1 1 1",
+    "b": "backLayer standingLayer -1 -1 1 1",
     
-    "u'": "upperLayer midYLayer 1 1 1 1",
-    "d'": "downLayer midYLayer -1 -1 1 1",
-    "r'": "rightLayer midXLayer -1 -1 1 1",
-    "l'": "leftLayer midXLayer 1 1 1 1",
-    "f'": "frontLayer midZLayer -1 -1 1 1",
-    "b'": "backLayer midZLayer 1 1 1 1",
+    "u'": "upperLayer equatorLayer 1 1 1 1",
+    "d'": "downLayer equatorLayer -1 -1 1 1",
+    "r'": "rightLayer middleLayer -1 -1 1 1",
+    "l'": "leftLayer middleLayer 1 1 1 1",
+    "f'": "frontLayer standingLayer -1 -1 1 1",
+    "b'": "backLayer standingLayer 1 1 1 1",
 
     "F2": "frontLayer 1 2",
     "B2": "backLayer -1 2",
@@ -248,12 +249,12 @@ export const moves = {
     "R2": "rightLayer 1 2",
     "U2": "upperLayer -1 2",
     "D2": "downLayer 1 2",
-    "M2": "midXLayer -1 2",
-    "E2": "midYLayer 1 2",
-    "S2": "midZLayer 1 2",
+    "M2": "middleLayer -1 2",
+    "E2": "equatorLayer 1 2",
+    "S2": "standingLayer 1 2",
 }
 
-export function getMove(move){
+export function getMoveFromMoves(move){
     const content = moves[move].split(" ")
     const separator = (content.length / 3);
 
