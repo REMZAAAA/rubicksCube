@@ -74,7 +74,6 @@ function whoIsKing(map, edgeFaces, edgeCube, frontCenter){
 function isKing(center, king, map){
     for (let i = 0; i < map.length; i++) {
         if (map[i][4] === center){
-            console.log(center, king, i)
             return king === i;
         }   
     }
@@ -102,6 +101,7 @@ export function kingAlgorithm(map){
         let state;
         let target;
 
+        console.log("\n")
         while (running) {
             edge = getPieceByFaceId("edge", [frontCenter.faceId, upperCenter.faceId], map)
             edgeCube = Number(Object.keys(edge)[0])
