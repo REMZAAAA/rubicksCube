@@ -198,3 +198,64 @@ export function checkForOpposite(){
         }
     }
 }
+
+export const moves = {
+    "F": "frontLayer 1 1",
+    "B": "backLayer -1 1",
+    "L": "leftLayer -1 1",
+    "R": "rightLayer 1 1",
+    "U": "upperLayer -1 1",
+    "D": "downLayer 1 1",
+    "M": "midXLayer -1 1",
+    "E": "midYLayer 1 1",
+    "S": "midZLayer 1 1",
+
+    "F'": "frontLayer -1 1",
+    "B'": "backLayer 1 1",
+    "L'": "leftLayer 1 1",
+    "R'": "rightLayer -1 1",
+    "U'": "upperLayer 1 1",
+    "D'": "downLayer -1 1",
+    "M'": "midXLayer 1 1",
+    "E'": "midYLayer -1 1",
+    "S'": "midZLayer -1 1",
+
+    "x": "rightLayer midXLayer leftLayer 1 1 1 1 1 1",
+    "y": "upperLayer midYLayer downLayer -1 -1 -1 1 1 1",
+    "z": "frontLayer midZLayer backLayer 1 1 1 1 1 1",
+
+    "x'": "rightLayer midXLayer leftLayer -1 -1 -1 1 1 1",
+    "y'": "upperLayer midYLayer downLayer 1 1 1 1 1 1",
+    "z'": "frontLayer midZLayer backLayer -1 -1 -1 1 1 1",
+
+    "u": "upperLayer midYLayer -1 -1 1 1",
+    "d": "downLayer midYLayer 1 1 1 1",
+    "r": "rightLayer midXLayer 1 1 1 1",
+    "l": "leftLayer midXLayer -1 -1 1 1",
+    "f": "frontLayer midZLayer 1 1 1 1",
+    "b": "backLayer midZLayer -1 -1 1 1",
+    
+    "u'": "upperLayer midYLayer 1 1 1 1",
+    "d'": "downLayer midYLayer -1 -1 1 1",
+    "r'": "rightLayer midXLayer -1 -1 1 1",
+    "l'": "leftLayer midXLayer 1 1 1 1",
+    "f'": "frontLayer midZLayer -1 -1 1 1",
+    "b'": "backLayer midZLayer 1 1 1 1",
+
+    "F2": "frontLayer 1 2",
+    "B2": "backLayer -1 2",
+    "L2": "leftLayer -1 2",
+    "R2": "rightLayer 1 2",
+    "U2": "upperLayer -1 2",
+    "D2": "downLayer 1 2",
+    "M2": "midXLayer -1 2",
+    "E2": "midYLayer 1 2",
+    "S2": "midZLayer 1 2",
+}
+
+export function getMove(move){
+    const content = moves[move].split(" ")
+    const separator = (content.length / 3);
+
+    return [content.slice(0, separator), content.slice(separator, separator * 2), content.slice(separator * 2, content.length)]
+}
