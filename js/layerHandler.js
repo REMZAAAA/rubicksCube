@@ -98,7 +98,7 @@ export const layers = [
     },
     // Middle slice parallel to L/R faces (M)
     {
-        "name": "midXLayer",
+        "name": "middleLayer",
         "grid": [
                 "c2","c5","c8",
                 "c11","c14","c17",
@@ -108,7 +108,7 @@ export const layers = [
     },
     // Middle slice parallel to U/D faces (E)
     {
-        "name": "midYLayer",
+        "name": "equatorLayer",
         "grid": [
                 "c4","c5","c6",
                 "c13","c14","c15",
@@ -118,7 +118,7 @@ export const layers = [
     },
     // Middle slice parallel to F/B faces (S)
     {
-        "name": "midZLayer",
+        "name": "standingLayer",
         "grid": [
                 "c10","c11","c12",
                 "c13","c14","c15",
