@@ -128,3 +128,20 @@ export const layers = [
     }
 ]
 
+export const layerToFace = {
+    "frontLayer": 0,
+    "backLayer":  4,
+    "leftLayer":  3,
+    "rightLayer": 2,
+    "upperLayer": 1,
+    "downLayer":  5,
+}
+export const faceToLayer = {
+    0: "frontLayer",
+    4: "backLayer",
+    3: "leftLayer",
+    2: "rightLayer",
+    1: "upperLayer",
+    5: "downLayer",
+}
+
