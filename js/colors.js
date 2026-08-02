@@ -56,12 +56,12 @@ export function updateColor(){
         let tempColor = colors[i].color;
         colors[i].color = colorsEl.querySelector(`input:nth-of-type(${i+1})`).value;
     }
-    updateBackground(cubeMap);
+    updateBackground(cubeMap, true);
 }
 
 export function resetColor(){
     colors = initColor();
-    updateBackground(cubeMap);
+    updateBackground(cubeMap, true);
 }
 
 export let colors = initColor();

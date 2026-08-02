@@ -1,4 +1,4 @@
-import { layers } from "./layerHandler.js"
+import { layers, layerToFace } from "./layerHandler.js"
 import { colors } from "./colors.js";
 
 const faceAxis = {
@@ -68,7 +68,7 @@ function initMap(){
     }
 
     fillMap(tempMap)
-    updateBackground(tempMap)
+    updateBackground(tempMap, true)
     return tempMap
 }
 
@@ -105,14 +105,79 @@ function fillMap(map){
     }
 }
 
-export function updateBackground(map){
+export function updateBackground(map, changeObj){
     // Synchronize every sticker color with the
     // current color configuration.
     for (let i = 0; i < 6; i++) {
         for (let j = 0; j < 9; j++) {
             map[i][j].color = colors[map[i][j].faceId].color
-            map[i][j].obj.style.backgroundColor = map[i][j].color
+            if (changeObj){
+                map[i][j].obj.style.backgroundColor = map[i][j].color
+            }
         }
     }
+}
+
+export function getPieceByFaceId(piece, faceIds, map){
+    // We get pieces by faceId and not color,
+    // cause user can make every face the same color
+    // however faceId is unique to the face and can't be changed.
+    const temp = Array();
+    let pieces;
+    let cubeDict;
+    let max;
+    let cubeCorner;
+    map.forEach(element => {
+        for (let i = 0; i < element.length; i++) {
+            // for all pieces (56) we get those who match:
+            if (element[i].piece == piece &&          // Matches the requested piece type,
+                faceIds.includes(element[i].faceId)){ // and one of the requested face IDs.
+                temp.push(element[i])
+            }
+            cubeDict = {};
+            // Build a weighted object where:
+            // key   = cube ID
+            // value = number of matching faces found on that cube.
+            for (let j = 0; j < temp.length; j++) {
+                // A cube can contain up to:
+                // - 3 faces for a corner,
+                // - 2 faces for an edge,
+                // - 1 face for a center.
+                // The more matching faces a cube has, the more relevant it is.
+                cubeDict[temp[j].cube] = !cubeDict[temp[j].cube] ? 1 : cubeDict[temp[j].cube] + 1;
+            }
+
+            // Find the cube(s) with the highest score.
+            // Multiple cube may share the same score,
+            // so the result can contain several cube IDs.
+            max = Math.max(...Object.values(cubeDict));
+            cubeCorner = Object.keys(cubeDict)
+                .filter(key => cubeDict[key] === max)
+                .map(Number);
+            pieces = {};
+
+            // Collect all matching faces that belong
+            // to the selected cube(s).
+            for (let j = 0; j < temp.length; j++) {
+                if (cubeCorner.includes(temp[j].cube)){
+                    if (!pieces[temp[j].cube]) pieces[temp[j].cube] = Array();
+                    pieces[temp[j].cube].push(temp[j])
+                }
+            }
+        }
+    });
+    return pieces
+}
+
+export function getFacesByCube(cube){
+    const temp = Array();
+    for (let i = 0; i < layers.length - 3; i++) {
+        if (layers[i].grid.includes(`c${cube}`)){
+            temp.push(layerToFace[layers[i].name])
+        }
+    }
+    // should return an Array which contains
+    // min 1, max 3 integers (faces).
+    return temp;
 }
 
