@@ -1,18 +1,17 @@
 import { updateBackground } from "./cubeMap.js"
 import { layers, layer, resetLayer } from "./layerHandler.js"
+import { getMove } from "./moveHistory.js";
 
 // Current animation duration in milliseconds.
 // Can be increased when performing double turns.
-let defaultDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
-export let animationDuration = defaultDuration;
+export let animationDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
 
 // exemple of input in script.js
 export function layerMove(name, direction, map, nbRotation=1, animated=false){
     // Read the base duration from CSS every time
     // in case it has been modified dynamically.
     if (animated){
-        defaultDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
-        animationDuration = defaultDuration * parseInt(nbRotation);
+        animationDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
         
         // If a previous animation was interrupted,
         // restore the layer before starting a new one.
@@ -67,10 +66,10 @@ function executeLayerMove(name, direction, map, nbRotation, animated){
     if (animated){
         setTimeout(() => {
             layer.className = "layer";
-            updateBackground(map);
+            updateBackground(map, true);
         }, animationDuration)
     }else{
-        updateBackground(map);
+        updateBackground(map, false);
     }
     
 }
@@ -359,4 +358,45 @@ function swapStickers(sticker, target){
     // Cube positions remain unchanged.
     sticker.faceId = target.faceId
     sticker.color = target.color
+}
+
+export function getOptimalMove(faceName, cubePos, targetPos){
+    let grid;
+    let move = faceName[0].toUpperCase();
+    for (let i = 0; i < layers.length - 3; i++) {
+        if (faceName === layers[i].name){
+            grid = layers[i].grid.map(pos => parseInt(pos.slice(1)));
+            break;
+        }
+    }
+
+    if (cubePos === targetPos){
+        return [];
+    }else{
+        let clockwiseTurn = [grid[7], grid[3], grid[1], grid[5]];
+        let index = clockwiseTurn.indexOf(cubePos);
+        let count = 0;
+
+        while (clockwiseTurn[(index + count + 1) % 4] !== targetPos){
+            count++;
+        }
+
+        count++;
+        if (count === 1){
+            return [move]
+        }else if (count === 2){
+            return [`${move}2`]
+        }else{
+            return [`${move}'`]
+        }
+    }
+}
+
+export function executeMove(moveList, map, history){
+    let move;
+    for (let i = 0; i < moveList.length; i++) {
+        move = getMove(moveList[i]);
+        layerMove(move[0], move[1], map, move[2], false)
+        history.push(moveList[i])
+    }
 }
