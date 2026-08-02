@@ -5,7 +5,8 @@ import { layerMove, animationDuration } from "./cubeRotation.js"
 import { resetHistory, addMove, checkForDouble, checkForTriple, checkForOpposite } from "./moveHistory.js"
 import { updateColor, resetColor } from "./colors.js"
 import { btnList, shuffleCube } from "./shuffle.js"
-import { getPieceByFaceId, setCross } from "./algorithm.js"
+import { setCross } from "./algorithm.js"
+import { getPieceByFaceId } from "./cubeMap.js"
 
 // The temporary rotation layer must be attached
 // to the cube before any move can be animated.
@@ -74,8 +75,16 @@ resetEL.addEventListener("click", () => {
 
 const shuffleEl = document.querySelector("#commands .shuffle")
 shuffleEl.addEventListener("click", async () => {
-    // Perform a random scramble sequence.
+    // Perform a random shuffle sequence.
     await shuffleCube();
+});
+
+let resolveMode = false;
+
+const resolveEl = document.querySelector("#commands .resolve")
+resolveEl.addEventListener("click", () => {
+    resolveMode = !resolveMode;
+    document.querySelector("#moves .slider").style.visibility = resolveMode ? "hidden" : "visible";
 });
 
 const colorInputEl = document.querySelectorAll(".colors input");
