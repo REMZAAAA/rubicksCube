@@ -4,23 +4,25 @@
     /* background-color: red; */
     gap: var(--padding-size);
 }
+
 #commands button{
+    display: grid;
+    place-items: center;
+
     color: white;
     background-color: black;
 }
 
 #commands .reset{
     flex: 1;
-    display: grid;
-    place-items: center;
+    font-size: 1em;
+    aspect-ratio: unset;
 }
 
-#commands .shuffle{
-    height: 100%;
-    aspect-ratio: 1;
-    display: grid;
-    place-items: center;
+#commands button{
     font-size: 2em;
     line-height: 0;
-}
 
+    aspect-ratio: 1;
+    height: 100%;
+}
