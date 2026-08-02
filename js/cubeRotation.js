@@ -1,6 +1,7 @@
-import { updateBackground } from "./cubeMap.js"
+import { cubeMap, updateBackground } from "./cubeMap.js"
 import { layers, layer, resetLayer } from "./layerHandler.js"
-import { getMove } from "./moveHistory.js";
+import { getMoveFromMoves, addMove } from "./moveHistory.js";
+import { renderMap } from "./cubeRenderer.js"
 
 // Current animation duration in milliseconds.
 // Can be increased when performing double turns.
@@ -44,22 +45,33 @@ function executeLayerMove(name, direction, map, nbRotation, animated){
         })
     }
 
-    const move = getMoveData(name, direction, map);
+    const moveData = getMoveData(name, direction, map);
+
+    console.log(`
+######################### \n
+movement name            : ${name[0].toUpperCase()}${direction < 0 ? "'" : ""}\n
+face moving              : ${name}\n
+direction                : ${direction}\n
+number of rotation       : ${nbRotation}\n
+is the movement animated ? ${animated}\n
+######################### \n\n`)
+
+    console.log("map before movement:")
+    renderMap(cubeMap)
 
     // Update the internal cube state immediately.
     // The visual animation will catch up afterwards.
     for (let i = 0; i < nbRotation; i++) {
         // M, E and S moves do not rotate a visible face.
-        if (!move.oneLayer){
-            rotateFace(move.face, move.direct);
+        if (!moveData.oneLayer){
+            rotateFace(moveData.face, moveData.direct);
         }
         rotateSides(
-            ...move.sides,
-            move.sideIndex,
-            move.direct
+            ...moveData.sides,
+            moveData.sideIndex,
+            moveData.direct
         );
     }
-    console.log(map);
 
     // Once the animation ends, restore the layer
     // and repaint the stickers.
@@ -71,7 +83,10 @@ function executeLayerMove(name, direction, map, nbRotation, animated){
     }else{
         updateBackground(map, false);
     }
-    
+
+    console.log("map after movement:")
+    renderMap(cubeMap)
+    console.log("map object:", cubeMap)
 }
 
 function getLayerByName(name){
@@ -209,7 +224,7 @@ function getMoveData(name, direction, map){
         // Slice moves.
         // They only affect the middle layer and
         // therefore have no visible face to rotate.
-        case "midXLayer":
+        case "middleLayer":
             return{
                 sides: [
                     map[1],
@@ -226,7 +241,7 @@ function getMoveData(name, direction, map){
                 direct: direction,
                 oneLayer: true
             };
-        case "midYLayer":
+        case "equatorLayer":
             return{
                 sides: [
                     map[4],
@@ -243,7 +258,7 @@ function getMoveData(name, direction, map){
                 direct: direction * -1,
                 oneLayer: true
             };
-        case "midZLayer":
+        case "standingLayer":
             return{
                 sides: [
                     map[1],
@@ -392,11 +407,12 @@ export function getOptimalMove(faceName, cubePos, targetPos){
     }
 }
 
-export function executeMove(moveList, map, history){
+export function executeMove(moveList, map, history, panel){
     let move;
     for (let i = 0; i < moveList.length; i++) {
-        move = getMove(moveList[i]);
+        move = getMoveFromMoves(moveList[i]);
         layerMove(move[0], move[1], map, move[2], false)
-        history.push(moveList[i])
+        // history.push(moveList[i])
+        addMove(history, moveList[i], panel)
     }
 }
