@@ -1,16 +1,20 @@
 import { mainCube, layer } from "./layerHandler.js"
-import { cubeMap, resetMap } from "./cubeMap.js"
-import { renderMap } from "./cubeRenderer.js"
+import { cubeMap, resetMap, getPieceByFaceId } from "./cubeMap.js"
 import { layerMove, animationDuration } from "./cubeRotation.js"
-import { resetHistory, addMove, checkForDouble, checkForTriple, checkForOpposite } from "./moveHistory.js"
+import { resetHistory, addMove} from "./moveHistory.js"
 import { updateColor, resetColor } from "./colors.js"
-import { btnList, shuffleCube } from "./shuffle.js"
+import { shuffleCube } from "./shuffle.js"
 import { setCross } from "./algorithm.js"
-import { getPieceByFaceId } from "./cubeMap.js"
+import { renderMap } from "./cubeRenderer.js"
+
+export const history = Array();
+export const historyBar = document.getElementById("history");
 
 // The temporary rotation layer must be attached
 // to the cube before any move can be animated.
 mainCube.appendChild(layer);
+
+const btnList = document.querySelectorAll("#moves button");
 
 btnList.forEach(element => {         
     // Every move button contains all the data needed
@@ -19,7 +23,7 @@ btnList.forEach(element => {
         // Parse the button value.
         // Example:
         // "frontLayer 1 1"
-        // "upperLayer midYLayer -1 -1 1 1"
+        // "upperLayer equatorLayer -1 -1 1 1"
         const btnContent = element.value.split(" ");
         const separator = (btnContent.length / 3);
 
@@ -31,21 +35,13 @@ btnList.forEach(element => {
         const btnDirection = btnContent.slice(separator, separator * 2);
         const btnNbRotation = btnContent.slice(separator * 2, btnContent.length);
 
-        console.log(btnValue, btnDirection, btnNbRotation)
         // add the move to the history.
-        addMove(element.textContent);
+        addMove(history, element.textContent, historyBar);
         
         // Exemple of input:
         // F: ["frontLayer"], ["1"], 1
         // u: ["upperLayer", midYlayer], ["-1", "-1"], 1
-        console.log("\n#############################################\n\n")
-        console.log("before move")
-        renderMap(cubeMap)
-
         layerMove(btnValue, btnDirection, cubeMap, btnNbRotation, true);
-
-        console.log("after move")
-        renderMap(cubeMap)
 
         // Prevent move spam while an animation
         // is currently playing.
@@ -70,7 +66,7 @@ resetEL.addEventListener("click", () => {
     // Restore the cube to its solved state
     // and clear the move history.
     resetMap();
-    resetHistory();
+    resetHistory(history, historyBar);
 });
 
 const shuffleEl = document.querySelector("#commands .shuffle")
