@@ -1,7 +1,7 @@
 import { cubeMap, updateBackground } from "./cubeMap.js";
-import { moves } from "./moveHistory.js";
-import { executeMove } from "./cubeRotation.js";
-import { history, historyBar } from "./script.js";
+import { moves } from "./history.js";
+import { executeMoves } from "./cubeRotation.js";
+import { history, historyBar } from "./main.js";
 
 function wait(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -13,10 +13,10 @@ export async function shuffleCube(){
         // Select a random move from the available buttons.
         const randomNumber = Math.floor(Math.random() * moves.length);
 
-        const move = [Object.keys(moves)[
+        const move = Object.keys(moves)[
             Math.floor(Math.random() * Object.keys(moves).length)
-        ]];
-        executeMove(move, cubeMap, history, historyBar)
+        ];
+        executeMoves(move, cubeMap, history, historyBar)
         updateBackground(cubeMap, true);
         await wait(0);
     }
