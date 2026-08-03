@@ -1,6 +1,6 @@
 import { cubeMap, updateBackground } from "./cubeMap.js"
 import { layers, layer, resetLayer } from "./layerHandler.js"
-import { getMoveFromMoves, addMove } from "./moveHistory.js";
+import { getMoveParameters, addMove } from "./history.js";
 import { renderMap } from "./cubeRenderer.js"
 
 // Current animation duration in milliseconds.
@@ -386,7 +386,7 @@ export function getOptimalMove(faceName, cubePos, targetPos){
     }
 
     if (cubePos === targetPos){
-        return [];
+        return "";
     }else{
         let clockwiseTurn = [grid[7], grid[3], grid[1], grid[5]];
         let index = clockwiseTurn.indexOf(cubePos);
@@ -398,21 +398,26 @@ export function getOptimalMove(faceName, cubePos, targetPos){
 
         count++;
         if (count === 1){
-            return [move]
+            return move
         }else if (count === 2){
-            return [`${move}2`]
+            return `${move}2`
         }else{
-            return [`${move}'`]
+            return `${move}'`
         }
     }
 }
 
-export function executeMove(moveList, map, history, panel){
+export function executeMoves(moves, map, history, panel, animated=false){
     let move;
-    for (let i = 0; i < moveList.length; i++) {
-        move = getMoveFromMoves(moveList[i]);
-        layerMove(move[0], move[1], map, move[2], false)
-        // history.push(moveList[i])
-        addMove(history, moveList[i], panel)
+    if (typeof(moves) === Array){
+        for (let i = 0; i < moves.length; i++) {
+            move = getMoveParameters(moves[i]);
+            layerMove(move[0], move[1], map, move[2], animated)
+            addMove(history, moves[i], panel)
+        }
+    }else{
+        move = getMoveParameters(moves);
+        layerMove(move[0], move[1], map, move[2], animated)
+        addMove(history, moves, panel)
     }
 }
