@@ -254,6 +254,15 @@ export const moves = {
     "S2": "standingLayer 1 2",
 }
 
+const sections = {
+    "clockwise moves": ["F", "B", "L", "R", "U", "D", "M", "E", "S"],
+    "counter-clockwise moves": ["F'", "B'", "L'", "R'", "U'", "D'", "M'", "E'", "S'"],
+    "cube rotations": ["x", "y", "z", "x'", "y'", "z'"],
+    "wide moves": ["u", "d", "r", "l", "f", "b"],
+    "wide counter-clockwise moves": ["u'", "d'", "r'", "l'", "f'", "b'"],
+    "double moves": ["F2", "B2", "L2", "R2", "U2", "D2", "M2", "E2", "S2"]
+};
+
 export function getMoveParameters(move){
     const content = moves[move].split(" ")
     const separator = (content.length / 3);
@@ -262,4 +271,27 @@ export function getMoveParameters(move){
     // - directions,
     // - number of quarter turns.
     return [content.slice(0, separator), content.slice(separator, separator * 2), content.slice(separator * 2, content.length)]
+}
+
+export function createMoves() {
+    const moveSlider = document.querySelector("#moves .slider");
+
+    for (const [title, moveList] of Object.entries(sections)) {
+        const section = document.createElement("section");
+
+        const heading = document.createElement("div");
+        heading.textContent = title;
+
+        const buttonsContainer = document.createElement("div");
+
+        for (const move of moveList) {
+            const button = document.createElement("button");
+            button.textContent = move;
+            buttonsContainer.appendChild(button);
+        }
+
+        section.appendChild(heading);
+        section.appendChild(buttonsContainer);
+        moveSlider.appendChild(section);
+    }
 }

@@ -2,6 +2,7 @@ import { mainCube, layer } from "./layerHandler.js"
 import { cubeMap, getPieceByFaceId } from "./cubeMap.js"
 import { setCross } from "./algorithm.js"
 import { renderMap } from "./cubeRenderer.js"
+import { createMoves } from "./history.js"
 
 export const history = Array();
 export const historyPanel = document.getElementById("history");
@@ -15,6 +16,8 @@ window.doCrossAlgo = doCrossAlgo;
 // The temporary rotation layer must be attached
 // to the cube before any move can be animated.
 mainCube.appendChild(layer);
+
+createMoves();
 
 renderMap(cubeMap);
 
