@@ -4,14 +4,14 @@ import { resetHistory } from "./history.js";
 import { shuffleCube } from "./shuffle.js";
 import { updateColor, resetColor } from "./colors.js";
 import { mainCube } from "./layerHandler.js"
-import { history, historyBar } from "./main.js";
+import { history, historyPanel } from "./main.js";
 const btnList = document.querySelectorAll("#moves button");
 btnList.forEach(element => {
     element.addEventListener("click", () => {
         const moveName = element.textContent;
 
         // execute the move.
-        executeMoves(moveName, cubeMap, history, historyBar, true)
+        executeMoves(moveName, cubeMap, history, historyPanel, true)
 
         // Prevent move spam while an animation
         // is currently playing.
@@ -30,7 +30,7 @@ resetEL.addEventListener("click", () => {
     // Restore the cube to its solved state
     // and clear the move history.
     resetMap();
-    resetHistory(history, historyBar);
+    resetHistory(history, historyPanel);
 });
 
 const shuffleEl = document.querySelector("#commands .shuffle")

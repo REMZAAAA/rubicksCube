@@ -4,7 +4,7 @@ import { setCross } from "./algorithm.js"
 import { renderMap } from "./cubeRenderer.js"
 
 export const history = Array();
-export const historyBar = document.getElementById("history");
+export const historyPanel = document.getElementById("history");
 
 export function doCrossAlgo(){
     setCross();
