@@ -1,10 +1,10 @@
 import { executeMoves, animationDuration } from "./cubeRotation.js";
-import { resetMap } from "./cubeMap.js";
+import { cubeMap, resetMap } from "./cubeMap.js";
 import { resetHistory } from "./history.js";
 import { shuffleCube } from "./shuffle.js";
 import { updateColor, resetColor } from "./colors.js";
 import { mainCube } from "./layerHandler.js"
-
+import { history, historyBar } from "./main.js";
 const btnList = document.querySelectorAll("#moves button");
 btnList.forEach(element => {
     element.addEventListener("click", () => {
