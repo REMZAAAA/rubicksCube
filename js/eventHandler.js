@@ -1,6 +1,6 @@
 import { executeMoves, animationDuration } from "./cubeRotation.js";
 import { resetMap } from "./cubeMap.js";
-import { resetHistory } from "./moveHistory.js";
+import { resetHistory } from "./history.js";
 import { shuffleCube } from "./shuffle.js";
 import { updateColor, resetColor } from "./colors.js";
 import { mainCube } from "./layerHandler.js"
