@@ -16,18 +16,18 @@
     overflow-y: scroll;
 }
 
-#moves .slider>div{
+#moves .slider>section{
     display: flex; flex-direction: column;
     gap: var(--padding-size);
 }
-#moves .slider>div>div:nth-of-type(1){
+#moves .slider>section>div:nth-of-type(1){
     text-align: center;
     color: white;
     min-width: 100%;
     padding-block: 5px;
     background-color: rgb(34, 34, 34);
 }
-#moves .slider>div>div:nth-of-type(2){
+#moves .slider>section>div:nth-of-type(2){
     display: flex; flex-wrap: wrap;
     justify-content: center;
     gap: 5px;
