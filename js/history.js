@@ -279,7 +279,7 @@ export function createMoves() {
     for (const [title, moveList] of Object.entries(sections)) {
         const section = document.createElement("section");
 
-        const heading = document.createElement("div");
+        const heading = document.createElement("p");
         heading.textContent = title;
 
         const buttonsContainer = document.createElement("div");

@@ -14,20 +14,22 @@
     display: flex; flex-direction: column;
     gap: var(--padding-size);
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #moves .slider>section{
     display: flex; flex-direction: column;
     gap: var(--padding-size);
 }
-#moves .slider>section>div:nth-of-type(1){
+#moves .slider>section>p{
     text-align: center;
     color: white;
     min-width: 100%;
+    max-width: 100%;
     padding-block: 5px;
     background-color: rgb(34, 34, 34);
 }
-#moves .slider>section>div:nth-of-type(2){
+#moves .slider>section>div{
     display: flex; flex-wrap: wrap;
     justify-content: center;
     gap: 5px;

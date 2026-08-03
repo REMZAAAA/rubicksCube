@@ -16,7 +16,7 @@
 body{
     height: 100dvh;
     width: 100vw;
-    min-height: 400px;
+    min-height: calc(400px + (var(--padding-size) * 2));
 
     background-color: rgb(34, 34, 34);
     
