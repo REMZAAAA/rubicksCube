@@ -409,15 +409,15 @@ export function getOptimalMove(faceName, cubePos, targetPos){
 
 export function executeMoves(moves, map, history, panel, animated=false){
     let move;
-    if (typeof(moves) === Array){
+    if (typeof(moves) === "string"){
+        move = getMoveParameters(moves);
+        layerMove(move[0], move[1], map, move[2], animated)
+        addMove(history, moves, panel)
+    }else{
         for (let i = 0; i < moves.length; i++) {
             move = getMoveParameters(moves[i]);
             layerMove(move[0], move[1], map, move[2], animated)
             addMove(history, moves[i], panel)
         }
-    }else{
-        move = getMoveParameters(moves);
-        layerMove(move[0], move[1], map, move[2], animated)
-        addMove(history, moves, panel)
     }
 }
