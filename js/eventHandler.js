@@ -11,7 +11,7 @@ btnList.forEach(element => {
         const moveName = element.textContent;
 
         // execute the move.
-        executeMoves(moveName, cubeMap, history, historyPanel, true)
+        executeMoves(moveName, "user", cubeMap, history, historyPanel, true)
 
         // Prevent move spam while an animation
         // is currently playing.
