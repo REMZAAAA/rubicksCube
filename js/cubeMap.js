@@ -49,12 +49,6 @@ const faceData = [
     },
 ]
 
-export let cubeMap = initMap();
-
-export function resetMap(){
-    cubeMap = initMap();
-}
-
 function initMap(){
     const tempMap = Array();
 
@@ -103,6 +97,35 @@ function fillMap(map){
             map[i][j]["obj"]   = document.querySelector(`#c${map[i][j].cube} .face:nth-child(${faceAxis[map[i][j].pos][map[i][j].index]})`);      
         }
     }
+}
+
+function createMainCube() {
+    const mainCube = document.getElementById("mainCube");
+    for (let i = 1; i <= 27; i++) {
+        const cube = document.createElement("div");
+        cube.id = `c${i}`;
+        cube.className = "cube";
+
+        for (let j = 0; j < 6; j++) {
+            const face = document.createElement("div");
+            face.className = "face";
+            cube.appendChild(face);
+        }
+
+        const p = document.createElement("p");
+        p.textContent = `c${i}`;
+        cube.appendChild(p);
+
+        mainCube.appendChild(cube);
+    }
+}
+
+createMainCube()
+
+export let cubeMap = initMap();
+
+export function resetMap(){
+    cubeMap = initMap();
 }
 
 export function updateBackground(map, changeObj){
