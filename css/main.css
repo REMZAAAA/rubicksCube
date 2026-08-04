@@ -1,0 +1,97 @@
+:root{
+    --c: 100px;
+    --animation-duration: .2;
+    --history-height: 50px;
+    --moves-button-size: 50px;
+    --moves-width: 250px;
+    --padding-size: 10px;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: monospace;
+}
+
+/*  */
+
+button{
+    all: unset;
+    user-select: none;
+    cursor: pointer;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
+
+/*  */
+
+main {
+    width: 100vw;
+    height: 100dvh;
+    min-height: max(500px, 100dvh);
+
+    display: grid;
+
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: var(--history-height) 1fr;
+    gap: var(--padding-size);
+    padding: var(--padding-size);
+
+    grid-template-areas:
+        "tools    history"
+        "sidebar  canvas";
+    background-color: rgb(34, 34, 34);
+}
+
+main>div{
+    background-color: black;
+}
+
+#tools {
+    grid-column: 1;
+    grid-row: 1;
+    grid-area: tools;
+}
+
+#history {
+    grid-column: 2;
+    grid-row: 1;
+    grid-area: history;
+}
+
+#sidebar {
+    grid-column: 1;
+    grid-row: 2;
+    grid-area: sidebar;
+}
+
+#canvas {
+    grid-column: 2;
+    grid-row: 2;
+    grid-area: canvas;
+}
+
+@media screen and (max-width: 650px) {
+    :root{
+        --c: 75px;
+    }
+    main{
+        grid-template-columns: 100px 1fr;
+        grid-template-rows: auto 1fr auto;
+
+        grid-template-areas:
+            "tools history"
+            "canvas canvas"
+            "sidebar sidebar";
+    }
+    #canvas{
+        min-height: 400px;
+    }
+}
