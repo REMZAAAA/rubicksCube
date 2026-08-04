@@ -6,15 +6,61 @@
     <title>rubik's cube</title>
     <link rel="stylesheet" href="./css/animation.css">
     <link rel="stylesheet" href="./css/history.css">
-    <link rel="stylesheet" href="./css/controls.css">
-    <link rel="stylesheet" href="./css/commands.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/menu.css">
+    <link rel="stylesheet" href="./css/sidebar.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/tools.css">
+    <link rel="stylesheet" href="./css/canvas.css">
 </head>
 <body>
 
-    <aside>
+    <main>
+        <div id="tools">
+            <a href="https://github.com/REMZAAAA/rubicksCube">GITHUB</a>
+        </div>
+        <div id="history"></div>
+        <div id="sidebar">
+            <div id="controls">
+                <div class="moves"></div>
+                <div class="resolve"></div>
+            </div>
 
+            <div id="commands">
+                <button class="reset">RESET CUBE</button>
+                <button class="shuffle">⇆</button>
+                <button class="resolve">🪄</button>
+            </div>
+        </div>
+        <div id="canvas">
+            <div id="mainCube" class=""></div>
+            <div id="menu">
+                <aside>
+                    <span></span>
+                    <span></span>
+                    <input type="checkbox">
+                </aside>
+
+                <div class="colors">
+                    <input type="color">
+                    <input type="color">
+                    <input type="color">
+                    <input type="color">
+                    <input type="color">
+                    <input type="color">
+                </div>
+
+                <div class="resetColor">
+                    <button>reset color</button>
+                </div>
+
+                <div class="debug">
+                    <input type="checkbox">
+                    debug mode
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- <aside>
         <div id="history"></div>
 
         <div id="canvas">
@@ -62,7 +108,7 @@
             <button class="shuffle">⇆</button>
             <button class="resolve">🤖</button>
         </div>
-    </aside>
+    </aside> -->
     
     <script type="module" src="./js/main.js"></script>
     <script type="module" src="./js/eventHandler.js"></script>
