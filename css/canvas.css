@@ -1,98 +1,14 @@
-:root{
-    --c: 100px;
-    --animation-duration: .2;
-    --history-height: 50px;
-    --moves-button-size: 50px;
-    --moves-width: 250px;
-    --padding-size: 10px;
-}
-
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-body{
-    height: 100dvh;
-    width: 100vw;
-    min-height: calc(400px + (var(--padding-size) * 2));
-
-    background-color: rgb(34, 34, 34);
-    
-    font-family: monospace;
-
-    display: flex; flex-direction: row-reverse;
-    padding: var(--padding-size);
-    gap: var(--padding-size);
-}
-
-@media screen and (max-width: 650px) {
-    :root{
-        --c: 75px;
-    }
-    body{
-        flex-direction: column;
-        max-height: 100dvh;
-    }
-    body>aside:nth-of-type(1){
-        max-width: 100% !important;
-    }
-    body>aside:nth-of-type(2){
-        min-height: auto !important;
-    }
-    #controls{
-        max-height: 200px;
-    }
-}
-
-button{
-    all: unset;
-    user-select: none;
-    cursor: pointer;
-}
-
-body>aside{
-    flex: 1;
-    display: flex; flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: var(--padding-size);
-}
-
-body>aside:nth-of-type(1){
-    flex: 10;
-    min-height: 400px;
-    max-width: calc(100vw - (var(--moves-width) + (var(--padding-size) * 3)));
-
-}
-body>aside:nth-of-type(2){
-    margin-top: auto;
-    justify-content: space-between;
-    height: 100%;
-    min-width: var(--moves-width);
-    min-height: 400px;
-}
-
-/*  */
-
 #canvas{
-    flex: 1;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-
-    width: 100%; height: auto;
-    min-height: calc(var(--c) * 3);
+    width: 100%;
 
     perspective: 800px;
-
     overflow: hidden;
     user-select: none;
     touch-action: none;
-
-    background-color: black;
 }
 
 #mainCube{
@@ -244,4 +160,111 @@ body>aside:nth-of-type(2){
 }
 #mainCube #c27{
     transform: translateZ(calc(-1 * var(--c))) translateX(calc(2 * var(--c))) translateY(calc(2 * var(--c)));
+}
+
+#menu{
+    position: absolute;
+    top: var(--padding-size);
+    right: var(--padding-size);
+
+    display: flex; flex-direction: column;
+    gap: var(--padding-size);
+
+    width: auto; height: auto;
+    padding: var(--padding-size);
+    z-index: 9;
+
+    background-color: rgb(34, 34, 34);
+    transform: translateX(calc(100% + var(--padding-size)));
+    transition: transform calc(var(--animation-duration) * 1s) ease;
+}
+
+/*  */
+
+#menu .colors{
+    width: calc((var(--moves-button-size) * 2) + var(--padding-size));
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--padding-size);
+}
+
+#menu .colors input{
+    all: unset;
+    width: var(--moves-button-size);
+    height: var(--moves-button-size);
+}
+
+/*  */
+
+#menu .resetColor button{
+    display: grid;
+    place-items: center;
+    width: 100%; height: 100%;
+    height: calc(var(--moves-button-size) / 2);
+    background-color: black;
+    color: white;
+}
+
+/*  */
+
+#menu .debug{
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%; height: calc(var(--moves-button-size) / 2);
+    background-color: black;
+    color: white;
+}
+
+#menu .debug input{
+    all: unset;
+    position: absolute;
+    width: 100%; height: 100%;
+    z-index: 1;
+}
+
+#menu .debug:has(input:checked){
+    background-color: white;
+    color: black;
+}
+
+/*  */
+
+#menu aside{
+    position: absolute;
+    top: 0; left: calc(-1 * var(--padding-size));
+
+    width: 40px;
+    aspect-ratio: 1;
+    transform: translateX(-100%);
+    display: grid;
+    place-items: center;
+    
+    background-color: rgb(34, 34, 34);
+}
+
+#menu aside span{
+    --f: 1;
+    position: absolute;
+    width: 60%; height: 2px;
+    transform: translateY(calc(5px * var(--f)));
+    transition: transform calc(var(--animation-duration) * 1s) ease;
+    background-color: white;
+}
+#menu aside span:nth-child(1){
+    --f: -1;
+}
+
+#menu aside input{
+    all: unset;
+    position: absolute;
+    width: 100%; height: 100%;
+}
+#menu aside:has(input:checked) span{
+    transform: rotate(calc(45deg * var(--f)));
+}
+
+#menu:has(aside input:checked){
+    transform: translateX(0);
 }
