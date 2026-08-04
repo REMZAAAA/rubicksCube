@@ -19,16 +19,8 @@ function cloneMap(map){
 }
 
 export function setCross(){
-    // get a copy of the cube.
-    // let map = cloneMap(cubeMap)
-    let map = cubeMap.map(face =>
-        face.map(piece => ({...piece}))
-    );
-    let crossMoves;
-
-    // console.log("before KING algorithm:", structuredClone(map))
-
-    crossMoves = kingAlgorithm(map)
-
+    let map = cloneMap(cubeMap);
+    const crossMoves = Array();
+    kingAlgorithm(map, crossMoves)
     console.log("crossMoves:", crossMoves);
 }
