@@ -98,107 +98,14 @@ const opposite = {
     "z'2": "z2",
 };
 
-export function resetHistory(history, panel){
-    // Remove every move from both the UI
-    // and the internal history array.
-    removeMove(history, history.length, panel);
-}
-
-export function addMove(history, move, panel){
-    // Add a move to the history array
-    history.push(move);
-    // and display it in the history panel.
-    if (panel){
-        const moveElement = document.createElement("p");
-        moveElement.innerText = move;
-        panel.appendChild(moveElement);
-    }
-    
-    checkForDouble(history, panel)
-    checkForTriple(history, panel)
-    checkForOpposite(history, panel)
-}
-
-export function removeMove(history, N, panel){
-    // Remove the last N moves from both
-    // the history array and the DOM.
-    for (let i = 0; i < N; i++) {
-        history.pop();
-        if (panel){
-            panel.removeChild(panel.lastChild)
-        }
-    }
-}
-
-export function checkForDouble(history, panel){
-    // Simplifies consecutive identical moves.
-    //
-    // Examples:
-    // F F     -> F2
-    // F2 F2   -> nothing
-    // F'2 F   -> F'
-    //
-    // Called after adding a new move.
-    if (history.length > 1){
-        const move = history[history.length - 1];
-        const lastMove = history[history.length - 2];
-        let newMove;
-
-        // F F -> F2    
-        if (move === lastMove && move[move.length - 1] !== '2'){
-            newMove = `${move}2`;
-            removeMove(history, 2, panel);
-            addMove(history, newMove, panel);
-        // F'2 F -> F'
-        }else if (lastMove == `${opposite[move]}2`){
-            removeMove(history, 2, panel);
-            addMove(history, opposite[move], panel)
-        // F F2 -> F'
-        }else if (move === `${lastMove}2`){
-            removeMove(history, 2, panel);
-            addMove(history, opposite[lastMove], panel)
-        // F2 F2 -> ∅
-        }else if (move === lastMove && move[move.length - 1] === '2'){
-            removeMove(history, 2, panel);
-        }
-    }
-}
-
-export function checkForTriple(history, panel){
-    // Simplifies sequences of three identical turns.
-    //
-    // Example:
-    // F2 F -> F'
-    //
-    // Equivalent to three quarter turns
-    // in the same direction.
-    if (history.length > 1){
-        const move = history[history.length - 1];
-        const lastMove = history[history.length - 2];
-        const double = `${move}2`
-
-        if (lastMove === double && opposite[move]){
-            removeMove(history, 2, panel);
-            addMove(history, opposite[move], panel);
-        }
-    }
-}
-
-export function checkForOpposite(history, panel){
-    // Cancels opposite consecutive moves.
-    //
-    // Examples:
-    // F F' -> ∅
-    // R' R -> ∅
-    // x x' -> ∅
-    if (history.length > 1){
-        const move = history[history.length - 1];
-        const lastMove = history[history.length - 2];
-        if (lastMove === opposite[move]){
-            removeMove(history, 2, panel)
-        }
-    }
-}
+const sections = {
+    "clockwise moves": ["F", "B", "L", "R", "U", "D", "M", "E", "S"],
+    "counter-clockwise moves": ["F'", "B'", "L'", "R'", "U'", "D'", "M'", "E'", "S'"],
+    "cube rotations": ["x", "y", "z", "x'", "y'", "z'"],
+    "wide moves": ["u", "d", "r", "l", "f", "b"],
+    "wide counter-clockwise moves": ["u'", "d'", "r'", "l'", "f'", "b'"],
+    "double moves": ["F2", "B2", "L2", "R2", "U2", "D2", "M2", "E2", "S2"]
+};
 
 export const moves = {
     "F": "frontLayer 1 1",
@@ -254,14 +161,112 @@ export const moves = {
     "S2": "standingLayer 1 2",
 }
 
-const sections = {
-    "clockwise moves": ["F", "B", "L", "R", "U", "D", "M", "E", "S"],
-    "counter-clockwise moves": ["F'", "B'", "L'", "R'", "U'", "D'", "M'", "E'", "S'"],
-    "cube rotations": ["x", "y", "z", "x'", "y'", "z'"],
-    "wide moves": ["u", "d", "r", "l", "f", "b"],
-    "wide counter-clockwise moves": ["u'", "d'", "r'", "l'", "f'", "b'"],
-    "double moves": ["F2", "B2", "L2", "R2", "U2", "D2", "M2", "E2", "S2"]
-};
+export function resetHistory(history, panel){
+    // Remove every move from both the UI
+    // and the internal history array.
+    removeMove(history, history.length, panel);
+}
+
+export function addMove(move, moveSource, history, panel){
+    // Add a move to the history array
+    history.push(move);
+    // and display it in the history panel.
+    if (panel){
+        const moveElement = document.createElement("p");
+        moveElement.innerText = move;
+        moveElement.classList.add(moveSource);
+        panel.appendChild(moveElement);
+    }
+    
+    checkForDouble(history, panel, moveSource)
+    checkForTriple(history, panel, moveSource)
+    checkForOpposite(history, panel, moveSource)
+}
+
+function removeMove(history, N, panel){
+    // Remove the last N moves from both
+    // the history array and the DOM.
+    for (let i = 0; i < N; i++) {
+        history.pop();
+        if (panel){
+            panel.removeChild(panel.lastChild)
+        }
+    }
+}
+
+function checkForDouble(history, panel, moveSource){
+    // Simplifies consecutive identical moves.
+    //
+    // Examples:
+    // F F     -> F2
+    // F2 F2   -> nothing
+    // F'2 F   -> F'
+    //
+    // Called after adding a new move.
+    if (history.length > 1){
+        const move = history[history.length - 1];
+        const lastMove = history[history.length - 2];
+        let newMove;
+
+        // F F -> F2    
+        if (move === lastMove && move[move.length - 1] !== '2'){
+            newMove = `${move}2`;
+            removeMove(history, 2, panel);
+            addMove(newMove, moveSource, history, panel);
+        // F'2 F -> F'
+        }else if (lastMove == `${opposite[move]}2`){
+            removeMove(history, 2, panel);
+            addMove(opposite[move], moveSource, history, panel)
+        // F F2 -> F'
+        }else if (move === `${lastMove}2`){
+            removeMove(history, 2, panel);
+            addMove(opposite[lastMove], moveSource, history, panel)
+        // F2 F2 -> ∅
+        }else if (move === lastMove && move[move.length - 1] === '2'){
+            removeMove(history, 2, panel);
+        }
+    }
+}
+
+function checkForTriple(history, panel, moveSource){
+    // Simplifies sequences of three identical turns.
+    //
+    // Example:
+    // F2 F -> F'
+    //
+    // Equivalent to three quarter turns
+    // in the same direction.
+    if (history.length > 1){
+        const move = history[history.length - 1];
+        const lastMove = history[history.length - 2];
+        const double = `${move}2`
+
+        if (lastMove === double && opposite[move]){
+            removeMove(history, 2, panel);
+            addMove(opposite[move], moveSource, history, panel);
+        }
+    }
+}
+
+function checkForOpposite(history, panel, moveSource){
+    // Cancels opposite consecutive moves.
+    //
+    // Examples:
+    // F F' -> ∅
+    // R' R -> ∅
+    // x x' -> ∅
+    if (history.length > 1){
+        const move = history[history.length - 1];
+        const lastMove = history[history.length - 2];
+        if (lastMove === opposite[move]){
+            removeMove(history, 2, panel, moveSource)
+        }
+    }
+}
+
+function groupMoveSource(){
+    
+}
 
 export function getMoveParameters(move){
     const content = moves[move].split(" ")
