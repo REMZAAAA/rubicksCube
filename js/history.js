@@ -264,10 +264,6 @@ function checkForOpposite(history, panel, moveSource){
     }
 }
 
-function groupMoveSource(){
-    
-}
-
 export function getMoveParameters(move){
     const content = moves[move].split(" ")
     const separator = (content.length / 3);

@@ -1,5 +1,6 @@
 import { getPieceByFaceId, getFacesByCube } from "./cubeMap.js";
 import { getOptimalMove, executeMoves } from "./cubeRotation.js";
+import { moves } from "./history.js";
 import { faceToLayer, layerToFace } from "./layerHandler.js";
 
 // KING algorithm
@@ -97,6 +98,7 @@ export function kingAlgorithm(map){
         let edgeFaces;
         let king;
         let move;
+        let moveSource;
         let otherFace;
         let state;
         let target;
@@ -118,7 +120,8 @@ export function kingAlgorithm(map){
 
                         otherFace = edgeFaces[0] === 0 ? edgeFaces[1] : edgeFaces[0];
                         move = `${faceToLayer[otherFace][0].toUpperCase()}2`;
-                        executeMoves(move, map, history);
+                        moveSource = "solver";
+                        executeMoves(move, moveSource, map, history);
 
                     } else if (!isKing(frontCenter, king, map)){
                         console.log("# the edge is between the front and upper face and front is not the KING.");
@@ -142,9 +145,10 @@ export function kingAlgorithm(map){
                     }
 
                     move = getOptimalMove("upperLayer", edgeCube, target);
+                    moveSource = "solver";
                     console.log("function getOptimalMove:", move);
                     if (move.length > 0){
-                        executeMoves(move, map, history);
+                        executeMoves(move, moveSource, map, history);
                     }
 
                     running = !isUpperKing;
@@ -155,16 +159,18 @@ export function kingAlgorithm(map){
                     console.log("> REPEAT B until the edge is located between the upper and back faces");
                     
                     move = getOptimalMove("backLayer", edgeCube, 20)
+                    moveSource = "solver";
                     console.log("function getOptimalMove:", move);
                     if (move.length > 0){
-                        executeMoves(move, map, history);
+                        executeMoves(move, moveSource, map, history);
                     }
 
                     if (isKing(backCenter, king, map)){
                         console.log("> then execute: B L U' L'");
 
                         move = ["B", "L", "U'", "L'"]
-                        executeMoves(move, map, history)
+                        moveSource = Array(move.length).fill("solver")
+                        executeMoves(move, moveSource, map, history);
                         running = false;
                     }
                 }
@@ -179,14 +185,16 @@ export function kingAlgorithm(map){
                     console.log("> Execute: D B D'");
                     move = ["D", "B", "D'"]
                 }
-                executeMoves(move, map, history)
+                moveSource = Array(move.length).fill("solver")
+                executeMoves(move, moveSource, map, history);
             }
         }
         console.log("~ edge is correctly placed")
         console.log("> Execute z'")
 
         move = "z'";
-        executeMoves(move, map, history)
+        moveSource = "solver";
+        executeMoves(move, moveSource, map, history);
         console.log("\n\n\n")
     }
     return history
