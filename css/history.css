@@ -39,7 +39,3 @@
 #history .user    p{background-color: lightblue;}
 #history .shuffle p{background-color: lightpink;}
 #history .solver  p{background-color: lightgreen;}
-
-#configHistory{
-    width: 100%;
-}
