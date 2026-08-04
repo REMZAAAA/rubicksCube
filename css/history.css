@@ -9,7 +9,6 @@
     padding-inline: var(--padding-size);
     gap: 5px;
 
-    background-color: black;
     cursor: default;
 }
 
@@ -24,7 +23,7 @@
     cursor: pointer;
 }
 #history .user:hover   {background-color: lightblue;}
-#history .shuffle:hover{background-color: lightpink;}
+#history .shuffle:hover{background-color: lightsalmon;}
 #history .solver:hover {background-color: lightgreen;}
 
 #history>button>p{
@@ -37,5 +36,5 @@
     background-color: transparent;
 }
 #history .user    p{background-color: lightblue;}
-#history .shuffle p{background-color: lightpink;}
+#history .shuffle p{background-color: lightsalmon;}
 #history .solver  p{background-color: lightgreen;}
