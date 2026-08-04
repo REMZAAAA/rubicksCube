@@ -41,7 +41,7 @@ body{
     body>aside:nth-of-type(2){
         min-height: auto !important;
     }
-    #moves{
+    #controls{
         max-height: 200px;
     }
 }

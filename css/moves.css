@@ -1,4 +1,4 @@
-#moves{
+#controls{
     width: 100%;
     max-height: 100%;
 
@@ -9,7 +9,7 @@
     background-color: black;
 }
 
-#moves .slider{
+#controls .moves{
     height: 100%;
     display: flex; flex-direction: column;
     gap: var(--padding-size);
@@ -17,11 +17,11 @@
     overflow-x: hidden;
 }
 
-#moves .slider>section{
+#controls .moves>section{
     display: flex; flex-direction: column;
     gap: var(--padding-size);
 }
-#moves .slider>section>p{
+#controls .moves>section>p{
     text-align: center;
     color: white;
     min-width: 100%;
@@ -29,7 +29,7 @@
     padding-block: 5px;
     background-color: rgb(34, 34, 34);
 }
-#moves .slider>section>div{
+#controls .moves>section>div{
     display: flex; flex-wrap: wrap;
     justify-content: center;
     gap: 5px;
@@ -37,7 +37,7 @@
     background-color: rgb(34, 34, 34);
 }
 
-#moves button{
+#controls button{
     width: var(--moves-button-size); height: var(--moves-button-size);
     color: white;
     background-color: black;
@@ -46,12 +46,12 @@
     opacity: 1;
 }
 
-#moves button:active{
+#controls button:active{
     opacity: .2;
     background-color: white;
     color: black;
 }
 
-#moves button:disabled{
+#controls button:disabled{
     opacity: .2;
 }

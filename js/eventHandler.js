@@ -5,7 +5,7 @@ import { shuffleCube } from "./shuffle.js";
 import { updateColor, resetColor } from "./colors.js";
 import { mainCube } from "./layerHandler.js"
 import { history, historyPanel } from "./main.js";
-const btnList = document.querySelectorAll("#moves button");
+const btnList = document.querySelectorAll("#controls button");
 btnList.forEach(element => {
     element.addEventListener("click", () => {
         const moveName = element.textContent;
@@ -44,7 +44,7 @@ let resolveMode = false;
 const resolveEl = document.querySelector("#commands .resolve")
 resolveEl.addEventListener("click", () => {
     resolveMode = !resolveMode;
-    document.querySelector("#moves .slider").style.visibility = resolveMode ? "hidden" : "visible";
+    document.querySelector("#controls .moves").style.visibility = resolveMode ? "hidden" : "visible";
 });
 
 const colorInputEl = document.querySelectorAll(".colors input");

@@ -274,7 +274,7 @@ export function getMoveParameters(move){
 }
 
 export function createMoves() {
-    const moveSlider = document.querySelector("#moves .slider");
+    const moveSlider = document.querySelector("#controls .moves");
 
     for (const [title, moveList] of Object.entries(sections)) {
         const section = document.createElement("section");
