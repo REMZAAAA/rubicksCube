@@ -10,8 +10,36 @@
     gap: 5px;
 
     background-color: black;
-    color: white;
+    cursor: default;
 }
-#history p{
+
+#history>button{
+    all: unset;
+    position: relative;
+    display: flex;
+    gap: 5px;
+}
+
+#history>button:hover{
+    cursor: pointer;
+}
+#history .user:hover   {background-color: lightblue;}
+#history .shuffle:hover{background-color: lightpink;}
+#history .solver:hover {background-color: lightgreen;}
+
+#history>button>p{
     font-size: 2em;
+    width: 2em;
+    text-align: center;
+    /* padding-inline: var(--padding-size); */
+}
+#history>button:hover>p{
+    background-color: transparent;
+}
+#history .user    p{background-color: lightblue;}
+#history .shuffle p{background-color: lightpink;}
+#history .solver  p{background-color: lightgreen;}
+
+#configHistory{
+    width: 100%;
 }
