@@ -45,6 +45,7 @@ const resolveEl = document.querySelector("#commands .resolve")
 resolveEl.addEventListener("click", () => {
     resolveMode = !resolveMode;
     document.querySelector("#controls .moves").style.visibility = resolveMode ? "hidden" : "visible";
+    resolveEl.classList.toggle("active")
 });
 
 const colorInputEl = document.querySelectorAll(".colors input");
