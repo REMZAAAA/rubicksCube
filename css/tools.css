@@ -1,0 +1,7 @@
+#tools{
+    height: var(--history-height);
+    display: grid;
+    place-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
