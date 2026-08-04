@@ -69,7 +69,7 @@ body>aside:nth-of-type(1){
 body>aside:nth-of-type(2){
     margin-top: auto;
     justify-content: space-between;
-    height: calc(100dvh - 80px);
+    height: 100%;
     min-width: var(--moves-width);
     min-height: 400px;
 }
