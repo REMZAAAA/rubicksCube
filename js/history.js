@@ -167,29 +167,48 @@ export function resetHistory(history, panel){
     removeMove(history, history.length, panel);
 }
 
-export function addMove(move, moveSource, history, panel){
-    // Add a move to the history array
+export function addMove(move, moveSource, history, panel) {
     history.push(move);
-    // and display it in the history panel.
-    if (panel){
+
+    if (panel) {
         const moveElement = document.createElement("p");
         moveElement.innerText = move;
-        moveElement.classList.add(moveSource);
-        panel.appendChild(moveElement);
+
+        const lastGroup = panel.lastElementChild;
+
+        if (
+            lastGroup &&
+            lastGroup.classList.contains("group") &&
+            lastGroup.classList.contains(moveSource)
+        ) {
+            lastGroup.appendChild(moveElement);
+        } else {
+            const group = document.createElement("button");
+            group.classList.add("group", moveSource);
+
+            group.appendChild(moveElement);
+            panel.appendChild(group);
+        }
     }
-    
-    checkForDouble(history, panel, moveSource)
-    checkForTriple(history, panel, moveSource)
-    checkForOpposite(history, panel, moveSource)
+
+    checkForDouble(history, panel, moveSource);
+    checkForTriple(history, panel, moveSource);
+    checkForOpposite(history, panel, moveSource);
 }
 
-function removeMove(history, N, panel){
-    // Remove the last N moves from both
-    // the history array and the DOM.
+function removeMove(history, N, panel) {
     for (let i = 0; i < N; i++) {
         history.pop();
-        if (panel){
-            panel.removeChild(panel.lastChild)
+
+        if (!panel) continue;
+
+        const lastGroup = panel.lastElementChild;
+        if (!lastGroup) continue;
+
+        lastGroup.lastElementChild?.remove();
+
+        if (lastGroup.children.length === 0) {
+            lastGroup.remove();
         }
     }
 }
