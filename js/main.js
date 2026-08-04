@@ -3,15 +3,31 @@ import { cubeMap, getPieceByFaceId } from "./cubeMap.js"
 import { setCross } from "./algorithm.js"
 import { renderMap } from "./cubeRenderer.js"
 import { createMoves } from "./history.js"
+import { kingAlgorithm } from "./king.js"
 
 export const history = Array();
 export const historyPanel = document.getElementById("history");
-export const mainCube = document.getElementById("mainCube");
+const mainCube = document.getElementById("mainCube");
 
-export function doCrossAlgo(){
+mainCube.appendChild(layer);
+
+createMoves();
+
+renderMap(cubeMap);
+
+export function doKingAlgorithm(map, history, panel, animated){
+    kingAlgorithm(map, history, panel, animated);
+}
+
+export function doSetCross(){
     setCross();
 }
-window.doCrossAlgo = doCrossAlgo;
+
+window.doKingAlgorithm = doKingAlgorithm;
+window.doSetCross = doSetCross;
+window.cm = cubeMap;
+window.h = history;
+window.p = historyPanel;
 
 // const tests = [
 //     getPieceByFaceId("corner", [0, 1, 2], cubeMap),
@@ -23,9 +39,3 @@ window.doCrossAlgo = doCrossAlgo;
 // ]
 
 // console.log(tests)
-
-mainCube.appendChild(layer);
-
-createMoves();
-
-renderMap(cubeMap);
