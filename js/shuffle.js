@@ -16,7 +16,7 @@ export async function shuffleCube(){
         const move = Object.keys(moves)[
             Math.floor(Math.random() * Object.keys(moves).length)
         ];
-        executeMoves(move, cubeMap, history, historyPanel)
+        executeMoves(move, "shuffle", cubeMap, history, historyPanel)
         updateBackground(cubeMap, true);
         await wait(0);
     }
