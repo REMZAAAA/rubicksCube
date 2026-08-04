@@ -3,7 +3,7 @@ import { cubeMap, resetMap } from "./cubeMap.js";
 import { resetHistory } from "./history.js";
 import { shuffleCube } from "./shuffle.js";
 import { updateColor, resetColor } from "./colors.js";
-import { history, historyPanel, mainCube } from "./main.js";
+import { history, historyPanel } from "./main.js";
 
 const btnList = document.querySelectorAll("#controls button");
 btnList.forEach(element => {
@@ -58,6 +58,7 @@ colorInputEl.forEach(element => {
 });
 
 const debugInput = document.querySelector("#menu .debug input");
+const mainCube = document.getElementById("mainCube");
 debugInput.addEventListener("click", () => {
     // Debug mode displays cube IDs
     // directly on the cube.
