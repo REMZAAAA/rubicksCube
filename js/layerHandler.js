@@ -1,7 +1,7 @@
+const mainCube = document.getElementById("mainCube");
 const tempLayer = document.createElement("div");
 tempLayer.className = "layer";
 
-export const mainCube = document.querySelector("#mainCube");
 // Temporary container used to animate rotations.
 // Cubes involved in a move are moved into this
 // element, rotated, then moved back into mainCube.
@@ -18,17 +18,6 @@ export const layer = tempLayer;
 // When a move is performed, the corresponding
 // 9 cube are moved into the temporary "layer"
 // element and rotated together.
-
-export function resetLayer(){
-    // Restore every cube currently inside the
-    // temporary layer back to the main cube.
-    let temp = layer.firstChild;
-    
-    while(layer.firstChild){
-        mainCube.appendChild(temp);
-        temp = layer.firstChild;
-    }
-}
 
 // To better understand these grids,
 // enable the "showCell" class on #mainCube
@@ -143,5 +132,16 @@ export const faceToLayer = {
     2: "rightLayer",
     1: "upperLayer",
     5: "downLayer",
+}
+
+export function resetLayer(){
+    // Restore every cube currently inside the
+    // temporary layer back to the main cube.
+    let temp = layer.firstChild;
+    
+    while(layer.firstChild){
+        mainCube.appendChild(temp);
+        temp = layer.firstChild;
+    }
 }
 
