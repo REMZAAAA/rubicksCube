@@ -55,3 +55,8 @@
 #controls button:disabled{
     opacity: .2;
 }
+
+#configHistory{
+    min-height: var(--history-height);
+    background-color: black;
+}
