@@ -407,17 +407,17 @@ export function getOptimalMove(faceName, cubePos, targetPos){
     }
 }
 
-export function executeMoves(moves, map, history, panel, animated=false){
+export function executeMoves(moves, movesSource, map, history, panel=null, animated=false){
     let move;
     if (typeof(moves) === "string"){
         move = getMoveParameters(moves);
         layerMove(move[0], move[1], map, move[2], animated)
-        addMove(history, moves, panel)
+        addMove(moves, movesSource, history, panel)
     }else{
         for (let i = 0; i < moves.length; i++) {
             move = getMoveParameters(moves[i]);
             layerMove(move[0], move[1], map, move[2], animated)
-            addMove(history, moves[i], panel)
+            addMove(moves[i], movesSource[i], history, panel)
         }
     }
 }
