@@ -49,6 +49,8 @@ function initColor(){
     return temp
 }
 
+export let colors = initColor();
+
 export function updateColor(){
     for (let i = 0; i < colors.length; i++) {
         // Read the current value from the corresponding color picker
@@ -63,5 +65,3 @@ export function resetColor(){
     colors = initColor();
     updateBackground(cubeMap, true);
 }
-
-export let colors = initColor();
