@@ -84,14 +84,14 @@ main>div{
     }
     main{
         grid-template-columns: 100px 1fr;
-        grid-template-rows: auto 1fr auto;
+        grid-template-rows: auto minmax(250px, 1fr) minmax(165px, 260px);
+        /* height: min-content; */
+        max-height: 100dvh;
 
         grid-template-areas:
             "tools history"
             "canvas canvas"
             "sidebar sidebar";
-    }
-    #canvas{
-        min-height: 400px;
+
     }
 }
