@@ -29,7 +29,7 @@ const baseColors = [
         "abbreviatedColor": "R"
     }
 ]
-const colorsEl = document.querySelector(".colors");
+const colorsEl = document.querySelector(".paintCube");
 
 // Initializes the color configuration.
 // - Resets all color inputs to their default values.
@@ -38,7 +38,11 @@ function initColor(){
     let temp = Array();
     for (let i = 0; i < baseColors.length; i++) {
         // Synchronize the color picker with the default value.
-        colorsEl.querySelector(`input:nth-of-type(${i+1})`).value = baseColors[i].color;
+        const spanEl = colorsEl.querySelector(`span:nth-of-type(${i+1})`)
+        const inputEl = colorsEl.querySelector(`span:nth-of-type(${i+1}) input`)
+        inputEl.value = baseColors[i].color;
+        spanEl.style.backgroundColor = baseColors[i].color;
+        colorsEl.style.backgroundColor = "black";
         
         // Create a fresh object to avoid modifying baseColors directly.
         temp.push({
@@ -56,7 +60,8 @@ export function updateColor(){
         // Read the current value from the corresponding color picker
         // and update the application's color configuration.
         let tempColor = colors[i].color;
-        colors[i].color = colorsEl.querySelector(`input:nth-of-type(${i+1})`).value;
+        colors[i].color = colorsEl.querySelector(`span:nth-of-type(${i+1}) input`).value;
+        colorsEl.querySelector(`span:nth-of-type(${i+1})`).style.backgroundColor = colors[i].color;
     }
     updateBackground(cubeMap, true);
 }
