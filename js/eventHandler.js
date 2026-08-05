@@ -41,11 +41,13 @@ shuffleEl.addEventListener("click", async () => {
 
 let resolveMode = false;
 
-const resolveEl = document.querySelector("#commands .resolve")
-resolveEl.addEventListener("click", () => {
+const resolveBtn = document.querySelector("#commands .resolve")
+const resolveEl = document.querySelector("#controls .resolve")
+resolveBtn.addEventListener("click", () => {
     resolveMode = !resolveMode;
     document.querySelector("#controls .moves").style.display = resolveMode ? "none" : "flex";
-    resolveEl.classList.toggle("active")
+    resolveEl.style.display = resolveMode ? "flex" : "none";
+    resolveBtn.classList.toggle("active")
 });
 
 const colorInputEl = document.querySelectorAll(".colors input");
