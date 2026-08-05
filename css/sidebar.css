@@ -1,10 +1,9 @@
 #sidebar{
-    overflow: hidden;
-
     display: flex;
     flex-direction: column;
     gap: var(--padding-size);
     padding: var(--padding-size);
+    overflow: hidden;
 }
 
 /* controls */
@@ -88,4 +87,11 @@
 
 #commands .resolve.active{
     filter: invert(1);
+}
+
+/* resolve */
+
+#controls .resolve{
+    background-color: rgb(34, 34, 34);
+    height: 100%;
 }
