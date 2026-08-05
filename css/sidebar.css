@@ -96,11 +96,14 @@
 
 #controls .tools{
     height: 100%;
-    display: flex; flex-direction: column;
+    /* display: flex; */
+    display: none;
+    flex-direction: column;
     padding: var(--padding-size);
     gap: var(--padding-size);
     background-color: rgb(34, 34, 34);
     overflow: scroll;
+
 }
 
 #controls .tools .playbackControls{
