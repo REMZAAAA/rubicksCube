@@ -5,7 +5,7 @@ import { shuffleCube } from "./shuffle.js";
 import { updateColor, resetColor } from "./colors.js";
 import { history, historyPanel } from "./main.js";
 
-const btnList = document.querySelectorAll("#controls button");
+const btnList = document.querySelectorAll("#controls .moves button");
 btnList.forEach(element => {
     element.addEventListener("click", () => {
         const moveName = element.textContent;
@@ -42,24 +42,17 @@ shuffleEl.addEventListener("click", async () => {
 let resolveMode = false;
 
 const resolveBtn = document.querySelector("#commands .resolve")
-const resolveEl = document.querySelector("#controls .resolve")
+const toolsEl = document.querySelector("#controls .tools")
 resolveBtn.addEventListener("click", () => {
     resolveMode = !resolveMode;
     document.querySelector("#controls .moves").style.display = resolveMode ? "none" : "flex";
-    resolveEl.style.display = resolveMode ? "flex" : "none";
+    toolsEl.style.display = resolveMode ? "flex" : "none";
     resolveBtn.classList.toggle("active")
 });
 
-const colorInputEl = document.querySelectorAll(".colors input");
-colorInputEl.forEach(element => {
-    // Update cube colors whenever the user
-    // changes a color picker.
-    element.addEventListener("change", () => {
-        updateColor();
-    });
-});
+// 
 
-const debugInput = document.querySelector("#menu .debug input");
+const debugInput = document.querySelector(".debug input");
 const mainCube = document.getElementById("mainCube");
 debugInput.addEventListener("click", () => {
     // Debug mode displays cube IDs
@@ -71,8 +64,29 @@ debugInput.addEventListener("click", () => {
     }
 })
 
-const resetColorEl = document.querySelector("#menu .resetColor button")
+const resetColorEl = document.querySelector(".resetColor button")
 resetColorEl.addEventListener("click", () => {
     // Restore the default cube color scheme.
     resetColor();
+});
+
+const picker = document.querySelector(".paintCube");
+const preview = picker.querySelectorAll("span");
+const input = picker.querySelectorAll("input");
+
+preview.forEach(element => {
+    element.addEventListener("click", () => {
+        picker.style.backgroundColor = element.querySelector("input").value
+    })
+    element.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        element.querySelector("input").showPicker();
+    });
+});
+
+input.forEach(element => {
+    element.addEventListener("change", () => {
+        updateColor();
+        picker.style.backgroundColor = element.value
+    });
 });
