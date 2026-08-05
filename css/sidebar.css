@@ -13,7 +13,8 @@
     flex: 1;
 }
 
-#controls button{
+#controls .moves button,
+#controls .tools .playbackControls button{
     display: grid;
     place-items: center;
 
@@ -45,13 +46,15 @@
     padding-block: 5px;
 }
 
-#controls button:active{
+#controls .moves button:active,
+#controls .tools .playbackControls button:active{
     opacity: .2;
     background-color: white;
     color: black;
 }
 
-#controls button:disabled{
+#controls .moves button:disabled,
+#controls .tools .playbackControls button:disabled{
     opacity: .2;
 }
 
@@ -89,9 +92,81 @@
     filter: invert(1);
 }
 
-/* resolve */
+/* tools */
 
-#controls .resolve{
-    background-color: rgb(34, 34, 34);
+#controls .tools{
     height: 100%;
+    display: flex; flex-direction: column;
+    padding: var(--padding-size);
+    gap: var(--padding-size);
+    background-color: rgb(34, 34, 34);
+    overflow: scroll;
+}
+
+#controls .tools .playbackControls{
+    display: flex;
+    justify-content: center;
+    gap: var(--padding-size);
+}
+
+#controls .tools .paintCube{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: repeat(2, var(--moves-button-size));
+    gap: var(--padding-size);
+    padding: var(--padding-size);
+
+    background-color: black;
+}
+#controls .tools .paintCube span{
+    position: relative;
+    background-color: rgb(34, 34, 34);
+    border: 2px solid black;
+}
+#controls .tools .paintCube span input{
+    all: unset;
+    position: absolute;
+    width: 100%; height: 100%;
+    visibility: hidden;
+}
+
+/*  */
+
+.resetColor,
+.debug{
+    position: relative;
+    width: 100%;
+    min-height: calc(var(--moves-button-size) / 2);
+    user-select: none;
+}
+
+.resetColor button,
+.debug input{
+    all: unset;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.resetColor button,
+.debug label{   
+    display: grid;
+    place-items: center;
+
+    background-color: black;
+    color: white;
+}
+
+.debug input{
+    position: absolute;
+    top: 0; left: 0;
+}
+.debug label{
+    width: 100%;
+    height: 100%;
+}
+
+.debug:has(input:checked) label{
+    background-color: white;
+    color: black;
 }
