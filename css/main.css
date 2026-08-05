@@ -45,7 +45,7 @@ main {
     padding: var(--padding-size);
 
     grid-template-areas:
-        "tools    history"
+        "link    history"
         "sidebar  canvas";
     background-color: rgb(34, 34, 34);
 }
@@ -54,10 +54,10 @@ main>div{
     background-color: black;
 }
 
-#tools {
+#link {
     grid-column: 1;
     grid-row: 1;
-    grid-area: tools;
+    grid-area: link;
 }
 
 #history {
@@ -89,9 +89,8 @@ main>div{
         max-height: 100dvh;
 
         grid-template-areas:
-            "tools history"
+            "link history"
             "canvas canvas"
             "sidebar sidebar";
-
     }
 }
