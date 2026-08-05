@@ -1,6 +1,5 @@
 const canvas = document.querySelector("#canvas");
 const mainCube = document.querySelector("#mainCube");
-const cellId = document.querySelectorAll(".cube p")
 
 let drag = false;
 
@@ -40,8 +39,8 @@ canvas.addEventListener("pointermove", e => {
     // In debug mode, cube IDs must remain readable.
     // Rotate them in the opposite direction so they
     // always face the camera.
-    if (mainCube.classList.contains("showCell")){
-        cellId.forEach(element => {
+    if (mainCube.classList.contains("showCell")) {
+        document.querySelectorAll(".cube p").forEach(element => {
             element.style.transform = `rotateY(${-ry}deg) rotateX(${-rx}deg)`;
         });
     }
