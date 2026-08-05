@@ -44,7 +44,7 @@ let resolveMode = false;
 const resolveEl = document.querySelector("#commands .resolve")
 resolveEl.addEventListener("click", () => {
     resolveMode = !resolveMode;
-    document.querySelector("#controls .moves").style.visibility = resolveMode ? "hidden" : "visible";
+    document.querySelector("#controls .moves").style.display = resolveMode ? "none" : "flex";
     resolveEl.classList.toggle("active")
 });
 
