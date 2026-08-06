@@ -106,9 +106,16 @@
 }
 
 #controls .tools .playbackControls{
-    display: flex;
-    justify-content: center;
+    /* display: flex;
+    justify-content: center; */
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: var(--moves-button-size);
     gap: var(--padding-size);
+}
+
+#controls .tools .playbackControls button{
+    width: 100%;
 }
 
 /*  */
