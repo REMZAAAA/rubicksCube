@@ -103,7 +103,6 @@
     gap: var(--padding-size);
     background-color: rgb(34, 34, 34);
     overflow: scroll;
-
 }
 
 #controls .tools .playbackControls{
@@ -111,6 +110,8 @@
     justify-content: center;
     gap: var(--padding-size);
 }
+
+/*  */
 
 #controls .tools .paintCube{
     display: grid;
