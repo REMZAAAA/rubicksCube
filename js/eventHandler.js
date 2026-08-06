@@ -75,12 +75,33 @@ const preview = picker.querySelectorAll("span");
 const input = picker.querySelectorAll("input");
 
 preview.forEach(element => {
+    const inputColor = element.querySelector("input");
+
     element.addEventListener("click", () => {
-        picker.style.backgroundColor = element.querySelector("input").value
-    })
+        picker.style.backgroundColor = inputColor.value;
+    });
+
+    // PC (right click)
     element.addEventListener("contextmenu", (e) => {
         e.preventDefault();
-        element.querySelector("input").showPicker();
+        inputColor.showPicker();
+    });
+
+    // Mobile (long press)
+    let timer;
+
+    element.addEventListener("pointerdown", () => {
+        timer = setTimeout(() => {
+            inputColor.showPicker();
+        }, 600);
+    });
+
+    element.addEventListener("pointerup", () => {
+        clearTimeout(timer);
+    });
+
+    element.addEventListener("pointerleave", () => {
+        clearTimeout(timer);
     });
 });
 
