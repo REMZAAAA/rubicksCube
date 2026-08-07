@@ -1,9 +1,10 @@
-import { executeMoves, animationDuration } from "./cubeRotation.js";
+import { executeMoves } from "./cubeRotation.js";
 import { cubeMap, resetMap } from "./cubeMap.js";
-import { resetHistory } from "./history.js";
+import { resetHistory, deleteGroup } from "./history.js";
 import { shuffleCube } from "./shuffle.js";
 import { updateColor, resetColor } from "./colors.js";
-import { history, historyPanel } from "./main.js";
+import { history, historyPanel, animationDuration } from "./main.js";
+import { createPopup } from "./popup.js";
 
 const btnList = document.querySelectorAll("#controls .moves button");
 btnList.forEach(element => {
@@ -11,7 +12,7 @@ btnList.forEach(element => {
         const moveName = element.textContent;
 
         // execute the move.
-        executeMoves(moveName, "user", cubeMap, history, historyPanel, true)
+        executeMoves(moveName, "user", cubeMap, history, historyPanel, animationDuration, true)
 
         // Prevent move spam while an animation
         // is currently playing.
@@ -111,3 +112,39 @@ input.forEach(element => {
         picker.style.backgroundColor = element.value
     });
 });
+
+
+const popup = document.getElementById("popup");
+let selectedGroup = null;
+
+historyPanel.addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+
+    if (!button) return;
+
+    selectedGroup = button;
+    const groupId = parseInt(selectedGroup.id);
+    const groupChildren = [...selectedGroup.children]
+        .map(child => child.textContent)
+        .join(", ");
+
+    createPopup(
+    "Are you sure you want to delete this following group ?",
+    ["GROUP ID:", groupId],
+    ["GROUP CHILDREN:", groupChildren])
+    popup.style.display = "grid";
+});
+
+
+popup.addEventListener("click", (e) => {
+    const button = e.target.closest("button");
+
+    if (!button) return;
+
+    if (button.textContent === "yes") {
+        deleteGroup(history, historyPanel, parseInt(selectedGroup.id));
+    }
+
+    popup.style.display = "none";
+});
+
