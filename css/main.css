@@ -1,7 +1,7 @@
 :root{
     --c: 100px;
     --animation-duration: .2;
-    --history-height: 50px;
+    --history-height: 75px;
     --moves-button-size: 50px;
     --moves-width: 250px;
     --padding-size: 10px;
@@ -33,21 +33,21 @@ a{
 /*  */
 
 main {
+    position: relative;
     width: 100vw;
     height: 100dvh;
     min-height: max(500px, 100dvh);
 
     display: grid;
 
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 300px 1fr;
     grid-template-rows: var(--history-height) 1fr;
-    gap: var(--padding-size);
-    padding: var(--padding-size);
+    /* gap: var(--padding-size); */
+    /* padding: var(--padding-size); */
 
     grid-template-areas:
         "link    history"
         "sidebar  canvas";
-    background-color: rgb(34, 34, 34);
 }
 
 *::-webkit-scrollbar {
@@ -55,7 +55,7 @@ main {
 }
 
 main>div{
-    background-color: black;
+    /* background-color: black; */
 }
 
 #link {
@@ -82,13 +82,30 @@ main>div{
     grid-area: canvas;
 }
 
+#link,
+#history,
+#sidebar,
+#canvas{
+    margin: var(--padding-size);
+
+}
+
+@media screen and (max-width: 800px) {
+    :root{
+        --c: 75px;
+    }
+    main{
+        grid-template-columns: 250px 1fr;
+    }
+}
+
 @media screen and (max-width: 650px) {
     :root{
         --c: 75px;
     }
     main{
         grid-template-columns: 100px 1fr;
-        grid-template-rows: auto minmax(250px, 1fr) minmax(165px, 260px);
+        grid-template-rows: var(--history-height) minmax(250px, 1fr) minmax(165px, 260px);
         /* height: min-content; */
         max-height: 100dvh;
 
@@ -97,4 +114,48 @@ main>div{
             "canvas canvas"
             "sidebar sidebar";
     }
+}
+
+@media screen and (max-width: 400px) {
+    :root{
+        --c: 50px;
+    }
+}
+
+#bg{
+    z-index: -1;
+    position: absolute;
+    width: 100%; height: 100%;
+    top: 0; left: 0;
+    overflow: hidden;
+    background-color: #0a0a0a;
+    --grid-size: 75px;
+    --grid-color: rgba(255, 255, 255, 0.08);
+
+    background-color: #0a0a0a;
+
+    background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+
+    background-size: var(--grid-size) var(--grid-size);
+    /* background-position: calc(var(--padding-size) / 2) calc(var(--padding-size) / 2); */
+}
+#bg::before,
+#bg::after{
+    content: '';
+    position: absolute;
+    height: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: #0a0a0a;
+}
+#bg::after{
+    top: 50%;
+    left: -10%;
+}
+
+#bg::before{
+    bottom: 75%;
+    right: -20%;
 }
