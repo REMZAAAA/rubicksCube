@@ -25,7 +25,7 @@
 }
 #mainCube.showCell .cube p{
     background-color: white;
-    width: calc(var(--c) / 4);
+    width: calc(var(--c) / 2);
     text-align: center;
 }
 
