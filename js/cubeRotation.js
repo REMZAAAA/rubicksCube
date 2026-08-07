@@ -5,15 +5,12 @@ import { renderMap } from "./cubeRenderer.js"
 
 // Current animation duration in milliseconds.
 // Can be increased when performing double turns.
-export let animationDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
 
 // exemple of input in script.js
-export function layerMove(name, direction, map, nbRotation=1, animated=false){
+export function layerMove(name, direction, map, nbRotation=1, animationDuration=0, changeBg=false){
     // Read the base duration from CSS every time
     // in case it has been modified dynamically.
-    if (animated){
-        animationDuration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--animation-duration").trim()) * 1000;
-        
+    if (animationDuration > 0){
         // If a previous animation was interrupted,
         // restore the layer before starting a new one.
         if (layer.childElementCount !== 0) {
@@ -24,12 +21,12 @@ export function layerMove(name, direction, map, nbRotation=1, animated=false){
     // Multiple layers can be rotated simultaneously
     // (x, y, z cube rotations for example).
     for (let i = 0; i < name.length; i++) {
-        executeLayerMove(name[i], parseInt(direction[i]), map, parseInt(nbRotation), animated);
+        executeLayerMove(name[i], parseInt(direction[i]), map, parseInt(nbRotation), animationDuration, changeBg);
     }
 }
 
-function executeLayerMove(name, direction, map, nbRotation, animated){
-    if (animated){
+function executeLayerMove(name, direction, map, nbRotation, animationDuration, changeBg){
+    if (animationDuration > 0){
         const layerName = getLayerByName(name);
         const layerGrid = layerName.grid;
         const layerRotateAxis = layerName.rotateAxis.toUpperCase();
@@ -53,7 +50,7 @@ movement name            : ${name[0].toUpperCase()}${direction < 0 ? "'" : ""}\n
 face moving              : ${name}\n
 direction                : ${direction}\n
 number of rotation       : ${nbRotation}\n
-is the movement animated ? ${animated}\n
+animation duration (sec) ? ${animationDuration}\n
 ######################### \n\n`)
 
     console.log("map before movement:")
@@ -75,7 +72,7 @@ is the movement animated ? ${animated}\n
 
     // Once the animation ends, restore the layer
     // and repaint the stickers.
-    if (animated){
+    if (changeBg){
         setTimeout(() => {
             layer.className = "layer";
             updateBackground(map, true);
@@ -407,16 +404,16 @@ export function getOptimalMove(faceName, cubePos, targetPos){
     }
 }
 
-export function executeMoves(moves, movesSource, map, history, panel=null, animated=false){
+export function executeMoves(moves, movesSource, map, history, panel=null, animationDuration=0, changeBg=false){
     let move;
     if (typeof(moves) === "string"){
         move = getMoveParameters(moves);
-        layerMove(move[0], move[1], map, move[2], animated)
+        layerMove(move[0], move[1], map, move[2], animationDuration, changeBg)
         addMove(moves, movesSource, history, panel)
     }else{
         for (let i = 0; i < moves.length; i++) {
             move = getMoveParameters(moves[i]);
-            layerMove(move[0], move[1], map, move[2], animated)
+            layerMove(move[0], move[1], map, move[2], animationDuration, changeBg)
             addMove(moves[i], movesSource[i], history, panel)
         }
     }
