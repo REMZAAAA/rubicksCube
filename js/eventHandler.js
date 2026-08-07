@@ -79,7 +79,8 @@ preview.forEach(element => {
     const inputColor = element.querySelector("input");
 
     element.addEventListener("click", () => {
-        picker.style.backgroundColor = inputColor.value;
+        // picker.style.backgroundColor = inputColor.value;
+        picker.style.backgroundColor = inputColor.value + "99";
     });
 
     // PC (right click)
@@ -109,7 +110,7 @@ preview.forEach(element => {
 input.forEach(element => {
     element.addEventListener("change", () => {
         updateColor();
-        picker.style.backgroundColor = element.value
+        picker.style.backgroundColor = element.value + "99";
     });
 });
 
