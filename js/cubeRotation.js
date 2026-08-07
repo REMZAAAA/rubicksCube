@@ -3,9 +3,6 @@ import { layers, layer, resetLayer } from "./layerHandler.js"
 import { getMoveParameters, addMove } from "./history.js";
 import { renderMap } from "./cubeRenderer.js"
 
-// Current animation duration in milliseconds.
-// Can be increased when performing double turns.
-
 // exemple of input in script.js
 export function layerMove(name, direction, map, nbRotation=1, animationDuration=0, changeBg=false){
     // Read the base duration from CSS every time
