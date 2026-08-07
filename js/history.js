@@ -5,6 +5,10 @@
 // Examples:
 // F  <-> F'
 // F2 <-> F'2
+
+import { cubeMap } from "./cubeMap.js";
+import { executeMoves } from "./cubeRotation.js";
+
 // x  <-> x'
 const opposite = {
     "F": "F'",
@@ -136,6 +140,14 @@ export const moves = {
     "y'": "upperLayer equatorLayer downLayer 1 1 1 1 1 1",
     "z'": "frontLayer standingLayer backLayer -1 -1 -1 1 1 1",
 
+    "x2": "rightLayer middleLayer leftLayer 1 1 1 2 2 2",
+    "y2": "upperLayer equatorLayer downLayer -1 -1 -1 2 2 2",
+    "z2": "frontLayer standingLayer backLayer 1 1 1 2 2 2",
+
+    "x'2": "rightLayer middleLayer leftLayer -1 -1 -1 2 2 2",
+    "y'2": "upperLayer equatorLayer downLayer 1 1 1 2 2 2",
+    "z'2": "frontLayer standingLayer backLayer -1 -1 -1 2 2 2",
+
     "u": "upperLayer equatorLayer -1 -1 1 1",
     "d": "downLayer equatorLayer 1 1 1 1",
     "r": "rightLayer middleLayer 1 1 1 1",
@@ -150,6 +162,20 @@ export const moves = {
     "f'": "frontLayer standingLayer -1 -1 1 1",
     "b'": "backLayer standingLayer 1 1 1 1",
 
+    "u2": "upperLayer equatorLayer -1 -1 2 2",
+    "d2": "downLayer equatorLayer 1 1 2 2",
+    "r2": "rightLayer middleLayer 1 1 2 2",
+    "l2": "leftLayer middleLayer -1 -1 2 2",
+    "f2": "frontLayer standingLayer 1 1 2 2",
+    "b2": "backLayer standingLayer -1 -1 2 2",
+    
+    "u'2": "upperLayer equatorLayer 1 1 2 2",
+    "d'2": "downLayer equatorLayer -1 -1 2 2",
+    "r'2": "rightLayer middleLayer -1 -1 2 2",
+    "l'2": "leftLayer middleLayer 1 1 2 2",
+    "f'2": "frontLayer standingLayer -1 -1 2 2",
+    "b'2": "backLayer standingLayer 1 1 2 2",
+
     "F2": "frontLayer 1 2",
     "B2": "backLayer -1 2",
     "L2": "leftLayer -1 2",
@@ -159,6 +185,16 @@ export const moves = {
     "M2": "middleLayer -1 2",
     "E2": "equatorLayer 1 2",
     "S2": "standingLayer 1 2",
+
+    "F'2": "frontLayer -1 2",
+    "B'2": "backLayer 1 2",
+    "L'2": "leftLayer 1 2",
+    "R'2": "rightLayer -1 2",
+    "U'2": "upperLayer 1 2",
+    "D'2": "downLayer -1 2",
+    "M'2": "middleLayer 1 2",
+    "E'2": "equatorLayer -1 2",
+    "S'2": "standingLayer -1 2",
 }
 
 export function resetHistory(history, panel){
@@ -167,7 +203,7 @@ export function resetHistory(history, panel){
     removeMove(history, history.length, panel);
 }
 
-export function addMove(move, moveSource, history, panel) {
+export function addMove(move, moveSource, history, panel){
     history.push(move);
 
     if (panel) {
@@ -187,6 +223,7 @@ export function addMove(move, moveSource, history, panel) {
             group.classList.add("group", moveSource);
 
             group.appendChild(moveElement);
+            group.id = panel.children.length;
             panel.appendChild(group);
         }
     }
@@ -196,7 +233,7 @@ export function addMove(move, moveSource, history, panel) {
     checkForOpposite(history, panel, moveSource);
 }
 
-function removeMove(history, N, panel) {
+function removeMove(history, N, panel){
     for (let i = 0; i < N; i++) {
         history.pop();
 
@@ -293,7 +330,7 @@ export function getMoveParameters(move){
     return [content.slice(0, separator), content.slice(separator, separator * 2), content.slice(separator * 2, content.length)]
 }
 
-export function createMoves() {
+export function createMoves(){
     const moveSlider = document.querySelector("#controls .moves");
 
     for (const [title, moveList] of Object.entries(sections)) {
@@ -313,5 +350,28 @@ export function createMoves() {
         section.appendChild(heading);
         section.appendChild(buttonsContainer);
         moveSlider.appendChild(section);
+    }
+}
+
+export function deleteGroup(history, historyPanel, groupId){
+    const backUp = Array();
+    for (let i = historyPanel.children.length - 1; i > -1; i--) {
+        let lastGroup = historyPanel.lastElementChild;
+        console.log(lastGroup)
+        for (let j = lastGroup.children.length - 1; j > -1; j--) {
+            let move = lastGroup.children[j].textContent
+            let moveSource = lastGroup.classList[1];
+            if (i !== groupId){
+                backUp.push([move, moveSource])
+            }
+            executeMoves(opposite[move], moveSource, cubeMap, history, historyPanel, 0, true)
+        }
+        if (i === groupId){
+            for (let j = backUp.length- 1; j > -1; j--) {
+                executeMoves(backUp[j][0], backUp[j][1], cubeMap, history, historyPanel, 0, true)
+            }
+            console.log(history)
+            break;
+        }
     }
 }
