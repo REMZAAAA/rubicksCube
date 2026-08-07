@@ -54,10 +54,6 @@ main {
     display: none;
 }
 
-main>div{
-    /* background-color: black; */
-}
-
 #link {
     grid-column: 1;
     grid-row: 1;
