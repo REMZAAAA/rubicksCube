@@ -3,12 +3,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
 
     perspective: 800px;
     overflow: hidden;
     user-select: none;
     touch-action: none;
+    background-color: rgba(34, 34, 34, 0.2);
 }
 
 #mainCube{
@@ -25,8 +25,10 @@
 }
 #mainCube.showCell .cube p{
     background-color: white;
-    width: calc(var(--c) / 2);
-    text-align: center;
+    display: grid;
+    place-items: center;
+    width: calc(var(--moves-width) / 8);
+    aspect-ratio: 1;
 }
 
 #mainCube .cube{
