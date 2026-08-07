@@ -6,8 +6,15 @@ let drag = false;
 let x = 0;
 let y = 0;
 
-let rx = -30;
-let ry = -45;
+const posX = -30;
+const posY = -45;
+
+let rx = posX;
+let ry = posY;
+
+document.querySelectorAll(".cube p").forEach(element => {
+    element.style.transform = `rotateY(${-posY}deg) rotateX(${-posX}deg)`;
+});
 
 canvas.addEventListener("pointerdown", e => {
     // Ignore interactions coming from the menu.
@@ -47,3 +54,17 @@ canvas.addEventListener("pointermove", e => {
 });
 
 canvas.addEventListener("pointerup", () => drag = false);
+
+export function resetPosition(ms){
+    mainCube.style.transition = `transform ${ms / 1000}s ease`;
+    mainCube.style.transform = `rotateX(${posX}deg) rotateY(${posY}deg)`;
+
+    setTimeout(() => {
+        mainCube.style.transition = `none`;
+        document.querySelectorAll(".cube p").forEach(element => {
+            element.style.transform = `rotateY(${-posY}deg) rotateX(${-posX}deg)`;
+        });
+        rx = posX;
+        ry = posY;
+    }, ms);
+}
