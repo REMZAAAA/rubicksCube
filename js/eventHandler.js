@@ -5,6 +5,7 @@ import { shuffleCube } from "./shuffle.js";
 import { updateColor, resetColor } from "./colors.js";
 import { history, historyPanel, animationDuration } from "./main.js";
 import { createPopup } from "./popup.js";
+import { resetPosition } from "./pan.js";
 
 const btnList = document.querySelectorAll("#controls .moves button");
 btnList.forEach(element => {
@@ -53,24 +54,6 @@ resolveBtn.addEventListener("click", () => {
 
 // 
 
-const debugInput = document.querySelector(".debug input");
-const mainCube = document.getElementById("mainCube");
-debugInput.addEventListener("click", () => {
-    // Debug mode displays cube IDs
-    // directly on the cube.
-    if (debugInput.checked){
-        mainCube.classList.add("showCell");
-    } else{
-        mainCube.classList.remove("showCell");
-    }
-})
-
-const resetColorEl = document.querySelector(".resetColor button")
-resetColorEl.addEventListener("click", () => {
-    // Restore the default cube color scheme.
-    resetColor();
-});
-
 const picker = document.querySelector(".paintCube");
 const preview = picker.querySelectorAll("span");
 const input = picker.querySelectorAll("input");
@@ -114,6 +97,31 @@ input.forEach(element => {
     });
 });
 
+const resetColorEl = document.querySelector(".resetColor button")
+resetColorEl.addEventListener("click", () => {
+    // Restore the default cube color scheme.
+    resetColor();
+});
+
+const resetPosEl = document.querySelector(".resetPos button")
+resetPosEl.addEventListener("click", () => {
+    // Restore the default cube position.
+    resetPosition(animationDuration);
+});
+
+const debugInput = document.querySelector(".debug input");
+const mainCube = document.getElementById("mainCube");
+debugInput.addEventListener("click", () => {
+    // Debug mode displays cube IDs
+    // directly on the cube.
+    if (debugInput.checked){
+        mainCube.classList.add("showCell");
+    } else{
+        mainCube.classList.remove("showCell");
+    }
+})
+
+// 
 
 const popup = document.getElementById("popup");
 let selectedGroup = null;
