@@ -1,15 +1,12 @@
 #history{
-    width: 100%; height: var(--history-height);
-    min-height: var(--history-height);
     overflow-x: scroll;
-    max-width: 100%;
 
     display: flex;
     align-items: center;
-    padding-inline: var(--padding-size);
     gap: 5px;
 
     cursor: default;
+    background-color: rgba(34, 34, 34, 0.2);
 }
 
 #history>button{
@@ -22,9 +19,9 @@
 #history>button:hover{
     cursor: pointer;
 }
-#history .user:hover   {background-color: lightblue;}
-#history .shuffle:hover{background-color: lightsalmon;}
-#history .solver:hover {background-color: lightgreen;}
+#history .user:hover   {background-color: rgba(173, 216, 230, 0.6);}
+#history .shuffle:hover{background-color: rgba(255, 160, 122, 0.6);}
+#history .solver:hover {background-color: rgba(144, 238, 144, 0.6);}
 
 #history>button>p{
     font-size: 2em;
@@ -35,6 +32,6 @@
 #history>button:hover>p{
     background-color: transparent;
 }
-#history .user    p{background-color: lightblue;}
-#history .shuffle p{background-color: lightsalmon;}
-#history .solver  p{background-color: lightgreen;}
+#history .user    p{background-color: rgba(173, 216, 230, 0.6);}
+#history .shuffle p{background-color: rgba(255, 160, 122, 0.6);}
+#history .solver  p{background-color: rgba(144, 238, 144, 0.6);}
