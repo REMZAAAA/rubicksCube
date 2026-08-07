@@ -16,8 +16,7 @@ export async function shuffleCube(){
         const move = Object.keys(moves)[
             Math.floor(Math.random() * Object.keys(moves).length)
         ];
-        executeMoves(move, "shuffle", cubeMap, history, historyPanel)
-        updateBackground(cubeMap, true);
+        executeMoves(move, "shuffle", cubeMap, history, historyPanel, 0, true)
         await wait(0);
     }
     console.log("randomly mixed cubeMap:", cubeMap)
